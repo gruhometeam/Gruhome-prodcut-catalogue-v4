@@ -1,0 +1,56 @@
+import { useState } from 'react'
+
+export default function MultiFilterBar({ filters, selectedFilters, onFilterChange }) {
+  const [openDropdown, setOpenDropdown] = useState(null)
+
+  if (!filters || Object.keys(filters).every(k => filters[k].values.length === 0)) {
+    return null
+  }
+
+  const filterKeys = Object.keys(filters).filter(k => filters[k].values.length > 0)
+
+  return (
+    <div className="w-full px-[2%] py-[16px] bg-premium-white border-b border-premium-text-light border-opacity-40">
+      {/* Filter Headers - Horizontal */}
+      <div className="flex gap-[16px] flex-wrap items-center">
+        {filterKeys.map((key) => (
+          <div key={key} className="relative flex-shrink-0">
+            <button
+              onClick={() => setOpenDropdown(openDropdown === key ? null : key)}
+              className="px-[12px] py-[6px] text-premium-charcoal font-medium text-[13px] bg-premium-white border border-premium-text-light border-opacity-40 rounded-[6px] hover:bg-premium-gray-bg transition-colors whitespace-nowrap"
+            >
+              {key}
+            </button>
+
+            {/* Dropdown Menu */}
+            {openDropdown === key && (
+              <div className="absolute top-full mt-[4px] left-0 bg-premium-white border border-premium-text-light border-opacity-40 rounded-[6px] shadow-lg z-30 max-h-[200px] overflow-y-auto min-w-[180px]">
+                <div className="p-[0px]">
+                  {filters[key].values.map((value) => (
+                    <label
+                      key={value}
+                      className="flex items-center gap-[8px] px-[12px] py-[8px] hover:bg-premium-gray-bg cursor-pointer border-b border-premium-text-light border-opacity-20 last:border-b-0"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedFilters[key] === value}
+                        onChange={(e) => {
+                          onFilterChange(key, e.target.checked ? value : null)
+                          setOpenDropdown(null)
+                        }}
+                        className="w-[14px] h-[14px]"
+                      />
+                      <span className="text-[12px] text-premium-charcoal break-words">
+                        {value}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}

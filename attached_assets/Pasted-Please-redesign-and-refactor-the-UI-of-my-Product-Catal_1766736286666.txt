@@ -1,0 +1,95 @@
+Please redesign and refactor the UI of my Product Catalog PWA to achieve a polished, professional, minimal Gruhome-style look.
+
+DO NOT change the data loading logic — only improve UI, layout, spacing, hover behavior, card design, lettering, and detail view.
+
+-------------------
+🎨 DESIGN GOALS:
+-------------------
+• Brutalist–minimalist, luxury-like visual style inspired by Gruhome brand
+• Typography-based design: clean spacing, consistent hierarchy, premium look
+• Avoid cramped layouts — give components breathing space
+• No elements should overflow screen width or go off-screen on hover
+• No black modal backgrounds — use soft overlay instead (rgba(0,0,0,0.4))
+• Remove the API URL from display — it should not appear in UI
+
+-------------------
+💎 VISUAL SPECS:
+-------------------
+COLOR PALETTE:
+  - Primary Brick Red: #A9472A
+  - Secondary Charcoal: #393939
+  - Background Off-white: #F9F7F3
+  - Light Border: #E6E1D7
+  - Text Primary: #1A1A1A
+  - Text Secondary: #5E5E5E
+
+TYPOGRAPHY:
+  - Font Family: Inter or Poppins
+  - Card Title: 18–21px bold
+  - Field label: 13–14px uppercase tracking 1–2px
+  - Field value: 15–17px medium weight
+
+-------------------
+📱 RESPONSIVE LAYOUT:
+-------------------
+• Mobile width → **card width max 95% viewport width**
+• Desktop grid → **2 cards per row**, responsive
+• Cards should never expand beyond viewport; no horizontal scroll
+• Text must be left-aligned with padding 16–20px inside the card
+
+-------------------
+🃏 CARD STYLE:
+-------------------
+• Rounded corners: 12px
+• Light subtle shadow: rgba(0,0,0,0.06)
+• On hover (desktop only):
+    - shadow increases slightly
+    - card lifts up 2–4px
+    - NO size expansion / NO overflow outside layout
+• GST% displayed as a colored badge on right side
+• Hide fields with null or empty values automatically
+
+-------------------
+🔍 SEARCH + FILTER:
+-------------------
+• Sticky search bar at top with light border and rounded corners
+• Placeholder: "Search by name, design, or price code…"
+• Search + Filter should have spacing below header (not touching screen top)
+• Filter dropdown needs:
+    - wider width
+    - padding inside
+    - rounded corners
+    - border color #E6E1D7
+• Filter must NOT push UI around when opened
+
+-------------------
+📄 DETAIL VIEW (when card clicked):
+-------------------
+• Use Centered Modal with:
+   - max width: 90% on mobile, 600px desktop
+   - background: white
+   - padding: 24px
+   - rounded corners: 12px
+   - scrollable inside if long content
+• Outside scrim: rgba(0,0,0,0.4)
+• Close button top-right, subtle and consistent
+• Prevent screen flash to black — NO full blackout transition
+
+-------------------
+📏 SPACING RULES:
+-------------------
+• Vertical spacing between items: 6–10px
+• Card internal padding: 16–20px
+• Page padding: 12–20px
+• Search bar padding: 12px
+• Section gaps: 12–16px
+
+-------------------
+🧹 CLEANUP / FIXES:
+-------------------
+✔ Remove "API URL" display
+✔ Fix hover expanding off screen
+✔ Ensure cards stay inside container width
+✔ Ensure long product names wrap instead of pushing layout
+✔ Remove borders touching text — add breathing room
+✔ Ensure there is no pure black in UI

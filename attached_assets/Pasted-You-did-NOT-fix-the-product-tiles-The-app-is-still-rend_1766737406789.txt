@@ -1,0 +1,78 @@
+You did NOT fix the product tiles. The app is still rendering raw text instead of cards. 
+Now fix this by ensuring ProductCard.jsx is actually used in Home.jsx.
+
+IMPORTANT — DO THESE EXACT THINGS:
+
+----------------------------------------
+1️⃣ VERIFY THE IMPORT PATH
+----------------------------------------
+In src/pages/Home.jsx:
+replace every incorrect import with this exact line:
+import ProductCard from '../components/ProductCard';
+
+----------------------------------------
+2️⃣ FIX THE MAPPING LOGIC
+----------------------------------------
+Right now Home.jsx is printing product values directly.
+Replace the product list output with this EXACT mapping:
+
+<div className="w-[96%] md:w-[90%] mx-auto mt-[20px]">
+  {products.map((product, index) => (
+    <ProductCard
+      key={index}
+      product={product}
+      columns={columns}
+      onClick={() => setSelectedProduct(product)}
+    />
+  ))}
+</div>
+
+----------------------------------------
+3️⃣ CONFIRM ProductCard.jsx STRUCTURE
+----------------------------------------
+ProductCard.jsx MUST return a full card container.
+Verify the return starts with exactly this:
+
+return (
+  <div
+    className="bg-white rounded-[12px] p-[16px] mb-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#C8C2B8] w-full cursor-pointer"
+    onClick={onClick}
+  >
+
+----------------------------------------
+4️⃣ REMOVE ANY OLD <li>, <p>, or raw product printing
+----------------------------------------
+Delete any of these from Home.jsx:
+- product[col]
+- product[columns[0]]
+- <p>{product.title}</p>
+- <div>{value}</div>
+They MUST NOT appear outside ProductCard.
+
+----------------------------------------
+5️⃣ VISUAL CONFIRMATION
+----------------------------------------
+After applying code changes:
+- cards must have borders, padding, shadows
+- each product must render inside a white rounded card
+- spacing between cards must be visible
+
+----------------------------------------
+🛑 DO NOT CHANGE ANYTHING ELSE
+----------------------------------------
+Do NOT touch:
+- multi filter
+- search
+- modal
+- useProducts
+- CSS tokens
+
+----------------------------------------
+📌 OUTPUT REQUIRED
+----------------------------------------
+Return only the updated code for:
+- src/pages/Home.jsx
+- src/components/ProductCard.jsx
+
+NO explanations, NO summaries.
+Only code.

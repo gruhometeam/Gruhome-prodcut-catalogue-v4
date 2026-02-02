@@ -1,0 +1,74 @@
+I need you to completely restyle and restructure my PWA UI to look modern, clean and premium — like an Apple or Nicobar design.
+
+Current issues to FIX:
+- Cards stretch full width and overflow the screen
+- Cards visually cluttered, text cramped
+- Product title alignment inconsistent
+- Search bar visually weak and too tight
+- Filter dropdown too big, poorly designed, limited to only Price Code
+- Modal popup goes full black and hides content
+- Layout does not feel like a premium brand
+
+STYLE GOALS:
+- Aesthetic closer to Good Earth / Nicobar / Arhaus / Muji / Apple
+- Minimal, elegant, quiet design
+- Color palette: charcoal text (#2E2E2E), subtle sage green accents (#8A9A5B), muted cream background (#F4ECD8)
+- Rounded corners 8px on cards
+- Soft shadows (not harsh, no borders)
+- Padding: 20–32px inside container grid, 16–24px inside cards
+- Typography:
+    Headings: Cormorant Garamond, serif, medium weight
+    Body: Inter or SF Pro, 400 weight
+    Values like prices/RRP/GST should be regular weight, not bold
+- No full-black backgrounds — use soft charcoal (#1B1B1B) at 80% opacity in modals
+
+LAYOUT SPECS:
+- Mobile: 1 column cards, centered, fixed max-width 420px (never full edge-to-edge)
+- Tablet/Desktop: responsive grid 2 or 3 columns, equal spacing
+- Cards must never overflow viewport
+- Search bar fixed at top on scroll (sticky)
+- Optional filter panel collapsible under search bar
+
+INTERACTION:
+- Clicking card opens modal overlay with full data
+- Modal centered, width 90% mobile / 60% desktop, white background
+- Modal scrolls internally while background remains static
+- No click-outside accidental closing — add close button
+
+DATA MAPPING:
+- Use dynamic column reading:
+    * read first row as column labels
+    * display them as labels in the card in a logical stack:
+        Product Name → biggest text
+        Columns like: Book Name, Design Name, Design Alt, Price Code, Roll, Cut, RRP, GST%
+    * If extra columns appear in future, show them inside modal only
+- If a value is blank or "0", hide that line instead of showing "N/A" visually
+- Search should match across all columns case-insensitively
+- Filters:
+    Replace “Price Code” filter with smart multi-filters:
+      1) Fabric type / Book Name (dropdown)
+      2) Price Code (dropdown)
+      3) GST% (dropdown)
+      Allow selecting multiple filters simultaneously
+
+FEATURES TO KEEP:
+- Offline caching
+- “Add to home screen” installability
+- Fast local search
+- Dynamic loading from JSON API
+
+WHAT TO REMOVE:
+- API link displayed in UI
+- “xxx products loaded” message
+- Horizontal scrolling
+- Hard-coded column names in UI
+
+PLEASE DELIVER:
+1. Updated responsive layout
+2. Polished visual design using the style palette above
+3. Proper spacing and typography
+4. A card + modal design that feels like a premium furniture brand
+5. Multi-filter panel
+6. Hide missing fields instead of showing N/A
+7. Smooth transitions (modal fade in/out, card hover elevation)
+8. Ensure dynamic columns don't break layout
