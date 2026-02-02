@@ -14,7 +14,7 @@ export default function Home() {
   // Filter specs for the dropdowns
   const filterSpecs = useMemo(() => {
     if (!headers || !headers.length || !products || !products.length) return [];
-    
+
     return headers.map(key => {
       const allValues = products
         .map(p => {
@@ -23,11 +23,11 @@ export default function Home() {
           return val.toString().trim();
         })
         .filter(v => v !== '' && v !== '0' && v !== 'N/A' && v !== 'undefined');
-      
-      const uniqueValues = Array.from(new Set(allValues)).sort((a, b) => 
+
+      const uniqueValues = Array.from(new Set(allValues)).sort((a, b) =>
         a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
       );
-      
+
       if (uniqueValues.length > 0) {
         return { key, label: key, options: uniqueValues };
       }
@@ -40,7 +40,7 @@ export default function Home() {
 
     return products.filter((p) => {
       const matchesSearch = searchTerms.every(term => {
-        return Object.values(p).some(val => 
+        return Object.values(p).some(val =>
           val?.toString().toLowerCase().includes(term)
         );
       });
@@ -98,26 +98,26 @@ export default function Home() {
       <div className="w-[96%] mx-auto py-8">
         <header className="mb-8 w-full flex flex-col items-stretch">
           <h1 className="font-serif text-[48px] text-[#2B2B2B] leading-none mb-6">Catalog</h1>
-          
+
           <div className="flex flex-col gap-6 w-full items-stretch">
             <div className="w-full bg-[#F4ECD8] rounded-[12px] border border-[#C8C2B8] shadow-sm overflow-hidden h-[64px] flex items-center">
-              <SearchBar 
-                value={search} 
-                onChange={setSearch} 
+              <SearchBar
+                value={search}
+                onChange={setSearch}
                 placeholder="Search by name, design, or price code..."
               />
             </div>
 
-            <div className="w-full overflow-hidden flex items-center gap-4">
+            <div className="w-full flex items-center gap-4">
               <div className="flex-1 min-w-0">
-                <MultiFilterBar 
+                <MultiFilterBar
                   filterSpecs={filterSpecs}
                   selectedFilters={filters}
                   onFilterChange={handleFilterChange}
                 />
               </div>
               {Object.keys(filters).length > 0 && (
-                <button 
+                <button
                   onClick={() => setFilters({})}
                   className="flex-shrink-0 text-[11px] uppercase tracking-[1px] text-[#8A9A5B] font-bold hover:text-[#8A9A5B]/70 px-2 h-[36px]"
                 >
@@ -135,9 +135,9 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
             gap: '32px',
             width: '100%'
           }}>
@@ -160,11 +160,11 @@ export default function Home() {
       </div>
 
       {selectedProduct && (
-        <div 
+        <div
           className="fixed inset-0 bg-[rgba(0,0,0,0.45)] backdrop-blur-sm flex items-center justify-center z-[10000] transition-all duration-300 px-4"
           onClick={() => setSelectedProduct(null)}
         >
-          <div 
+          <div
             className="bg-white rounded-[12px] p-[24px] w-full max-w-[90%] md:max-w-[60%] max-h-[85vh] overflow-y-auto shadow-[0_4px_16px_rgba(0,0,0,0.1)] relative"
             onClick={e => e.stopPropagation()}
           >
@@ -172,7 +172,7 @@ export default function Home() {
               <h2 className="font-serif text-[32px] text-[#2B2B2B] leading-tight pr-8">
                 {selectedProduct[activeHeaders[0]]}
               </h2>
-              <button 
+              <button
                 onClick={() => setSelectedProduct(null)}
                 className="p-2 hover:bg-[#F4ECD8] rounded-full transition-colors text-[#2B2B2B]/30 hover:text-[#2B2B2B]"
               >
@@ -183,9 +183,9 @@ export default function Home() {
               {activeHeaders.map(header => {
                 const value = selectedProduct[header];
                 if (!value || value === '0' || value === 'N/A') return null;
-                
-                const isNumeric = !isNaN(parseFloat(value.toString().replace(/[^0-9.]/g, ''))) && 
-                                 (header.toLowerCase().includes('price') || header.toLowerCase().includes('rrp') || header.toLowerCase().includes('rate') || header.toLowerCase().includes('roll') || header.toLowerCase().includes('cut'));
+
+                const isNumeric = !isNaN(parseFloat(value.toString().replace(/[^0-9.]/g, ''))) &&
+                  (header.toLowerCase().includes('price') || header.toLowerCase().includes('rrp') || header.toLowerCase().includes('rate') || header.toLowerCase().includes('roll') || header.toLowerCase().includes('cut'));
 
                 return (
                   <div key={header} className="flex flex-col gap-1 border-b border-[#C8C2B8]/10 pb-4 last:border-0">
