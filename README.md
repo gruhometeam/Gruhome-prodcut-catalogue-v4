@@ -18,7 +18,7 @@
 
 ## The problem
 
-Gruhome sells home furnishings — **curtains, sofa fabric, wallpaper, bedding**. Inventory is organised in physical swatch books with a large catalog of design SKUs. Staff need to look up a specific design fast while standing on the shop floor with a customer.
+Gruhome sells home furnishings — **curtains, sofa fabric, wallpaper, bedding**. Inventory spans **2,000+ design SKUs** organised across physical swatch books. A **5–7 person sales team** needs to look up a specific design fast while standing on the shop floor with a customer.
 
 Before this tool, lookups happened by flipping through a printed catalog or scrolling a Google Sheet on a desktop in the back office. Neither works in the moment a customer asks *"do you have this design in a darker shade?"*
 
@@ -134,7 +134,7 @@ The build output in `dist/` can be deployed to any static host (Netlify, Cloudfl
 
 ## Status
 
-Live in production — in active use by Gruhome staff on the shop floor. The deployed URL is internal to the store's team and not published publicly.
+Live in production — in daily use by Gruhome staff on the shop floor since launch. The deployed URL is internal to the store's team and not published publicly.
 
 ---
 
