@@ -48,10 +48,13 @@ A **Progressive Web App** built in React + Vite. Staff visit a URL once, tap "Ad
 
 **Quick Quote**
 - Calculator for 6 product categories: Curtain (standard / Roman blind / fabric-only), Upholstery, Wallpaper, Blinds
+- **Editable price field** — MRP pre-fills from the catalog but can be overridden for that quote; catalog data is never modified
+- **Blackout / lining add-on** (Curtain Fabric only) — toggle on/off; price per metre defaults to ₹450/m (editable); quantity auto-matches main fabric metres; same discount % applied as main fabric
 - Fabric SKU / serial number field (optional, prints on quote)
 - Discount strip (0–30% on materials only)
+- Roman blind making rate quick-set presets: ₹100 / ₹150 / ₹200 / ₹250 per sq.ft
 - Auto-generated quote reference number (QQN)
-- Itemised breakdown with labour and materials split
+- Itemised breakdown with labour, lining, and discount lines split out
 - Share quote as formatted WhatsApp text + visual screenshot card
 
 **Cart**
@@ -98,6 +101,7 @@ Staff phones (installed as PWA)
 | **Google Sheets as the database** | The store owner already maintains inventory in a sheet. A "real" database would mean the owner edits a CMS instead — a worse workflow. Sheets is the source of truth; the app is a UX layer over it. |
 | **Apps Script web endpoint over a server** | No hosting cost, no backend to maintain, no auth surface to secure. The sheet → JSON pipeline is a single deployed script. |
 | **MRP as the canonical price** | MRP (Maximum Retail Price) is tax-inclusive and customer-facing. RRP is stored in the sheet for reference but not shown in the UI. |
+| **Quote-scoped price override** | Staff sometimes negotiate a price that differs from MRP. The price field in Quick Quote is pre-filled from the catalog but is local state — changing it affects only that quote session and never writes back to the sheet. |
 | **PWA, not a native Android/iOS app** | Avoids Play Store / App Store review, package management, and update friction. Staff install once via a URL. Updates ship instantly. |
 | **LocalStorage cache before network fetch** | Shop wifi is unreliable. The cached snapshot renders first; the network fetch refreshes silently when it succeeds. App is usable on a stale cache when offline. |
 | **Filter whitelist (`BRAND NAME`, `BOOK NAME` only)** | Dynamic filters across all 10 columns caused 300ms+ lag (DESIGN NAME alone has ~1,800 unique values). Whitelisting 2 meaningful dimensions keeps dropdowns instant. |
