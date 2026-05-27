@@ -11,10 +11,10 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'Product Catalog',
-        short_name: 'Catalog',
-        description: 'Internal employee product catalog',
-        theme_color: '#2E4232',
+        name: 'Gruhome',
+        short_name: 'Gruhome',
+        description: 'Gruhome product catalogue & quick quote tool',
+        theme_color: '#8A9A5B',
         background_color: '#ffffff',
         display: 'standalone',
         icons: [
