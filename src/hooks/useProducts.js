@@ -11,10 +11,13 @@ export const useProducts = () => {
     setLoading(true);
     setError(null);
     try {
-      // Try loading from local storage first for offline support
+      // Load cache off the critical path — JSON.parse of 2000+ rows is
+      // synchronous and would block first paint if called inline.
       const cached = localStorage.getItem('product_catalog_cache');
       if (cached) {
-        setData(JSON.parse(cached));
+        setTimeout(() => {
+          try { setData(JSON.parse(cached)); } catch (_) {}
+        }, 0);
       }
 
       const response = await fetch(API_URL);

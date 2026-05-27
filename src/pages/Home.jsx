@@ -136,7 +136,14 @@ export default function Home() {
   const navigate = useNavigate();
   const { hindiOn, toggleHindi } = useContext(CartContext);
   const { products, headers, loading, error, retry } = useProducts();
-  const [search, setSearch] = useState('');
+  const [searchInput, setSearchInput] = useState('');   // immediate — drives the input
+  const [search, setSearch] = useState('');              // debounced — drives the filter
+  const searchTimer = useRef(null);
+  const handleSearch = useCallback((val) => {
+    setSearchInput(val);
+    clearTimeout(searchTimer.current);
+    searchTimer.current = setTimeout(() => setSearch(val), 250);
+  }, []);
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState('name-asc');
   const [priceRange, setPriceRange] = useState({ min: null, max: null });
@@ -145,18 +152,23 @@ export default function Home() {
   const [shareCard, setShareCard] = useState(null);
   const handleSelect = useCallback((p) => setSelectedProduct(p), []);
 
+  // Only BRAND NAME and BOOK NAME are meaningful filter dimensions.
+  // All other columns (DESIGN NAME, PRICE CODE, RRP, etc.) have hundreds–thousands
+  // of unique values and would make dropdowns unusably slow.
+  const FILTER_KEYS = ['BRAND NAME', 'BOOK NAME'];
+
   const filterSpecs = useMemo(() => {
-    if (!headers?.length || !products?.length) return [];
-    return headers.map(key => {
-      const allValues = products
-        .map(p => { const v = p[key]; return v == null ? '' : v.toString().trim(); })
-        .filter(v => v !== '' && v !== '0' && v !== 'N/A' && v !== 'undefined');
-      const uniqueValues = Array.from(new Set(allValues)).sort((a, b) =>
-        a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
-      );
+    if (!products?.length) return [];
+    return FILTER_KEYS.map(key => {
+      const seen = new Set();
+      for (const p of products) {
+        const v = p[key];
+        if (v != null && v !== '' && v !== '0' && v !== 'N/A') seen.add(v.toString().trim());
+      }
+      const uniqueValues = Array.from(seen).sort();
       return uniqueValues.length > 0 ? { key, label: key, options: uniqueValues } : null;
     }).filter(Boolean);
-  }, [products, headers]);
+  }, [products]);
 
   const priceBounds = useMemo(() => {
     const nums = products.map(p => parseFloat(p['RRP'])).filter(n => !isNaN(n));
@@ -283,7 +295,7 @@ export default function Home() {
 
           {/* Search */}
           <div className="w-full bg-[#F4ECD8] rounded-[12px] border border-[#C8C2B8] shadow-sm overflow-hidden h-[64px] flex items-center">
-            <SearchBar value={search} onChange={setSearch} placeholder="Search design, brand, book…" />
+            <SearchBar value={searchInput} onChange={handleSearch} placeholder="Search design, brand, book…" />
           </div>
 
           {/* Sort + Price + Layout toggle row */}
@@ -330,8 +342,8 @@ export default function Home() {
         ) : layout === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts.slice(0, 150).map((product, i) => (
-              <ProductCard key={i} product={product} headers={headers} layout="grid"
-                onSelect={handleSelect} />
+              <ProductCard key={product['PRICE CODE'] || product['DESIGN NAME'] || i}
+                product={product} headers={headers} layout="grid" onSelect={handleSelect} />
             ))}
             {filteredProducts.length > 150 && (
               <div className="col-span-full text-center py-6 text-[13px] text-[#2B2B2B]/40">
@@ -342,8 +354,8 @@ export default function Home() {
         ) : (
           <div className="flex flex-col gap-2.5">
             {filteredProducts.slice(0, 150).map((product, i) => (
-              <ProductCard key={i} product={product} headers={headers} layout="list"
-                onSelect={handleSelect} />
+              <ProductCard key={product['PRICE CODE'] || product['DESIGN NAME'] || i}
+                product={product} headers={headers} layout="list" onSelect={handleSelect} />
             ))}
             {filteredProducts.length > 150 && (
               <div className="text-center py-6 text-[13px] text-[#2B2B2B]/40">
