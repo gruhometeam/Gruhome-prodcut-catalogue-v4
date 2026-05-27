@@ -5,17 +5,17 @@
 @source "./**/*.jsx";
 
 @theme {
-  --color-background: #F4ECD8;
-  --color-charcoal: #2B2B2B;
-  --color-border-warm: #C8C2B8;
-  --color-sage: #8A9A5B;
+  --color-background: #111111;
+  --color-charcoal: #FFFFFF;
+  --color-border-warm: rgba(255,255,255,0.10);
+  --color-sage: #C5DE7A;
   --font-serif: 'Cormorant Garamond', serif;
   --font-sans: 'Inter', sans-serif;
 }
 
 body {
-  background-color: #F4ECD8 !important;
-  color: #2B2B2B;
+  background-color: #111111 !important;
+  color: #FFFFFF;
   -webkit-font-smoothing: antialiased;
   font-family: 'Inter', sans-serif;
 }

@@ -117,13 +117,13 @@ function generateQQN() {
 
 // ── UI primitives ──────────────────────────────────────────────
 function HiLabel({ text }) {
-  return <span className="text-[9px] text-[#2B2B2B]/30 block leading-none mt-0.5">{text}</span>;
+  return <span className="text-[9px] text-white/30 block leading-none mt-0.5">{text}</span>;
 }
 
 function StepBtn({ onClick, children }) {
   return (
     <button onClick={onClick}
-      className="w-8 h-8 rounded-lg border border-[#C8C2B8] bg-[#FBF5E5] text-[#2B2B2B] text-lg font-semibold flex items-center justify-center">
+      className="w-8 h-8 rounded-lg border border-white/10 bg-[#252527] text-white text-lg font-semibold flex items-center justify-center">
       {children}
     </button>
   );
@@ -131,15 +131,15 @@ function StepBtn({ onClick, children }) {
 
 function NumberRow({ label, hindiKey, unit, value, step = 1, min = 0, onChange, hindiOn }) {
   return (
-    <div className="flex items-center justify-between py-2.5 border-b border-[#C8C2B8]/30 last:border-0">
+    <div className="flex items-center justify-between py-2.5 border-b border-white/[0.08] last:border-0">
       <div>
-        <span className="text-[13.5px] font-medium text-[#2B2B2B]">{label}</span>
+        <span className="text-[13.5px] font-medium text-white">{label}</span>
         {hindiOn && hindiKey && H[hindiKey] && <HiLabel text={H[hindiKey]} />}
       </div>
       <div className="flex items-center gap-2">
         <StepBtn onClick={() => onChange(Math.max(min, +(value - step).toFixed(2)))}>−</StepBtn>
-        <div className="min-w-[80px] text-center text-[15px] font-semibold text-[#2B2B2B] tabular-nums">
-          {value} <span className="text-[11px] font-normal text-[#2B2B2B]/40">{unit}</span>
+        <div className="min-w-[80px] text-center text-[15px] font-semibold text-white tabular-nums">
+          {value} <span className="text-[11px] font-normal text-white/40">{unit}</span>
         </div>
         <StepBtn onClick={() => onChange(+(value + step).toFixed(2))}>+</StepBtn>
       </div>
@@ -149,9 +149,9 @@ function NumberRow({ label, hindiKey, unit, value, step = 1, min = 0, onChange, 
 
 function RadioRow({ label, hindiKey, value, options, onChange, hindiOn }) {
   return (
-    <div className="flex flex-col gap-1.5 py-2.5 border-b border-[#C8C2B8]/30 last:border-0">
+    <div className="flex flex-col gap-1.5 py-2.5 border-b border-white/[0.08] last:border-0">
       <div>
-        <span className="text-[13.5px] font-medium text-[#2B2B2B]">{label}</span>
+        <span className="text-[13.5px] font-medium text-white">{label}</span>
         {hindiOn && hindiKey && H[hindiKey] && <HiLabel text={H[hindiKey]} />}
       </div>
       <div className="flex gap-2 flex-wrap">
@@ -159,7 +159,7 @@ function RadioRow({ label, hindiKey, value, options, onChange, hindiOn }) {
           const active = value === o.v;
           return (
             <button key={o.v} onClick={() => onChange(o.v)}
-              className={`px-3 py-1.5 rounded-full text-[12px] font-medium border transition-colors ${active ? 'bg-[#8A9A5B] text-white border-[#8A9A5B]' : 'border-[#C8C2B8] text-[#2B2B2B]'}`}>
+              className={`px-3 py-1.5 rounded-full text-[12px] font-medium border transition-colors ${active ? 'bg-[#8A9A5B] text-white border-[#8A9A5B]' : 'border-white/10 text-white'}`}>
               {o.l}
               {hindiOn && H[o.l] && <span className="block text-[9px] opacity-70 leading-none mt-0.5">{H[o.l]}</span>}
             </button>
@@ -174,29 +174,29 @@ function Section({ title, hindiKey, subtitle, children, hindiOn }) {
   return (
     <div className="flex flex-col gap-2">
       <div>
-        <div className="text-[10.5px] uppercase tracking-widest font-bold text-[#2B2B2B]/40">
+        <div className="text-[10.5px] uppercase tracking-widest font-bold text-white/40">
           {title}
           {hindiOn && hindiKey && H[hindiKey] && (
-            <span className="ml-1.5 normal-case tracking-normal font-normal text-[#2B2B2B]/25">{H[hindiKey]}</span>
+            <span className="ml-1.5 normal-case tracking-normal font-normal text-white/25">{H[hindiKey]}</span>
           )}
         </div>
-        {subtitle && <div className="text-[11px] text-[#2B2B2B]/40 mt-1 italic">{subtitle}</div>}
+        {subtitle && <div className="text-[11px] text-white/40 mt-1 italic">{subtitle}</div>}
       </div>
-      <div className="bg-white border border-[#C8C2B8]/50 rounded-xl px-3 py-1">{children}</div>
+      <div className="bg-[#1C1C1E] border border-white/[0.08] rounded-xl px-3 py-1">{children}</div>
     </div>
   );
 }
 
 function SegControl({ value, options, onChange, hindiOn }) {
   return (
-    <div className="flex bg-[#FBF5E5] border border-[#C8C2B8]/50 rounded-xl p-0.5">
+    <div className="flex bg-[#252527] border border-white/[0.08] rounded-xl p-0.5">
       {options.map(o => {
         const active = value === o.v;
         return (
           <button key={o.v} onClick={() => onChange(o.v)}
-            className={`flex-1 py-2 rounded-[10px] text-[13px] font-semibold transition-all flex flex-col items-center ${active ? 'bg-white text-[#2B2B2B] shadow-sm' : 'text-[#2B2B2B]/55'}`}>
+            className={`flex-1 py-2 rounded-[10px] text-[13px] font-semibold transition-all flex flex-col items-center ${active ? 'bg-[#1C1C1E] text-white shadow-sm' : 'text-white/55'}`}>
             {o.l}
-            {hindiOn && H[o.l] && <span className="text-[9px] font-normal text-[#2B2B2B]/30 leading-none mt-0.5">{H[o.l]}</span>}
+            {hindiOn && H[o.l] && <span className="text-[9px] font-normal text-white/30 leading-none mt-0.5">{H[o.l]}</span>}
           </button>
         );
       })}
@@ -206,12 +206,12 @@ function SegControl({ value, options, onChange, hindiOn }) {
 
 function DiscountStrip({ value, options, onChange }) {
   return (
-    <div className="flex bg-[#FBF5E5] border border-[#C8C2B8]/50 rounded-xl p-0.5">
+    <div className="flex bg-[#252527] border border-white/[0.08] rounded-xl p-0.5">
       {options.map(v => {
         const active = value === v;
         return (
           <button key={v} onClick={() => onChange(v)}
-            className={`flex-1 py-2 rounded-[10px] text-[12.5px] tabular-nums transition-all ${active ? 'bg-[#8A9A5B] text-white font-bold shadow-sm' : 'font-medium text-[#2B2B2B]'}`}>
+            className={`flex-1 py-2 rounded-[10px] text-[12.5px] tabular-nums transition-all ${active ? 'bg-[#8A9A5B] text-white font-bold shadow-sm' : 'font-medium text-white'}`}>
             {v}%
           </button>
         );
@@ -243,10 +243,10 @@ export default function Quote() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-[#F4ECD8] flex items-center justify-center">
+      <div className="min-h-screen bg-[#111111] flex items-center justify-center">
         <div className="text-center p-8">
-          <p className="text-[#2B2B2B]/55 mb-4">No product selected.</p>
-          <button onClick={() => navigate('/')} className="text-[#8A9A5B] font-semibold">← Browse catalog</button>
+          <p className="text-white/55 mb-4">No product selected.</p>
+          <button onClick={() => navigate('/')} className="text-[#C5DE7A] font-semibold">← Browse catalog</button>
         </div>
       </div>
     );
@@ -347,59 +347,59 @@ export default function Quote() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4ECD8] pb-8">
+    <div className="min-h-screen bg-[#111111] pb-8">
       {/* Header */}
-      <div className="sticky top-0 bg-[#F4ECD8] z-10 flex items-center justify-between px-4 py-3 border-b border-[#C8C2B8]/40">
+      <div className="sticky top-0 bg-[#111111] z-10 flex items-center justify-between px-4 py-3 border-b border-white/[0.08]">
         <button onClick={() => navigate(-1)}
-          className="w-9 h-9 rounded-xl bg-white border border-[#C8C2B8] flex items-center justify-center">
-          <ChevronLeft size={20} className="text-[#2B2B2B]" />
+          className="w-9 h-9 rounded-xl bg-[#1C1C1E] border border-white/10 flex items-center justify-center">
+          <ChevronLeft size={20} className="text-white" />
         </button>
         <div className="text-center">
-          <span className="font-serif text-xl font-semibold text-[#2B2B2B]">Quick Quote</span>
-          <div className="text-[10px] text-[#2B2B2B]/40 font-mono tracking-wide">{qqn}</div>
+          <span className="font-serif text-xl font-semibold text-white">Quick Quote</span>
+          <div className="text-[10px] text-white/40 font-mono tracking-wide">{qqn}</div>
         </div>
         <div className="w-9" />
       </div>
 
       <div className="px-4 py-4 flex flex-col gap-4">
         {/* Selected product */}
-        <div className="bg-white border border-[#C8C2B8]/50 rounded-xl px-4 py-3 flex items-center gap-3">
+        <div className="bg-[#1C1C1E] border border-white/[0.08] rounded-xl px-4 py-3 flex items-center gap-3">
           <div className="flex-1 min-w-0">
-            <div className="font-serif text-lg font-semibold text-[#2B2B2B] leading-tight truncate">{designName}</div>
-            <div className="text-[11.5px] text-[#2B2B2B]/55 mt-0.5 truncate">
+            <div className="font-serif text-lg font-semibold text-white leading-tight truncate">{designName}</div>
+            <div className="text-[11.5px] text-white/55 mt-0.5 truncate">
               {brandName}{bookName ? `  ·  ${bookName}` : ''}{priceCode ? `  ·  ${priceCode}` : ''}
             </div>
           </div>
           <div className="text-right flex-shrink-0">
-            <div className="text-[#8A9A5B] font-bold text-lg tabular-nums">{formatINR(price)}</div>
-            <div className="text-[9.5px] text-[#2B2B2B]/35">{UNIT_BY_CATEGORY[category]}</div>
+            <div className="text-[#C5DE7A] font-bold text-lg tabular-nums">{formatINR(price)}</div>
+            <div className="text-[9.5px] text-white/35">{UNIT_BY_CATEGORY[category]}</div>
           </div>
         </div>
 
         {/* Optional fabric SKU */}
         <div className="flex flex-col gap-1">
-          <label className="text-[10.5px] uppercase tracking-widest font-bold text-[#2B2B2B]/40">
-            Fabric SKU / Serial No. <span className="normal-case tracking-normal font-normal text-[#2B2B2B]/30">(optional)</span>
+          <label className="text-[10.5px] uppercase tracking-widest font-bold text-white/40">
+            Fabric SKU / Serial No. <span className="normal-case tracking-normal font-normal text-white/25">(optional)</span>
           </label>
           <input
             type="text"
             value={fabricSku}
             onChange={e => setFabricSku(e.target.value)}
             placeholder="e.g. DD-0421 (written on fabric back)"
-            className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#C8C2B8] text-[#2B2B2B] text-[13.5px] font-mono placeholder-[#2B2B2B]/25 outline-none"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-[#1C1C1E] border border-white/10 text-white text-[13.5px] font-mono placeholder-white/25 outline-none"
           />
         </div>
 
         {/* Category picker */}
         <div className="flex flex-col gap-2">
-          <div className="text-[10.5px] uppercase tracking-widest font-bold text-[#2B2B2B]/40">
+          <div className="text-[10.5px] uppercase tracking-widest font-bold text-white/40">
             Category
-            {hindiOn && <span className="ml-1.5 normal-case tracking-normal font-normal text-[#2B2B2B]/25">{H['Category']}</span>}
+            {hindiOn && <span className="ml-1.5 normal-case tracking-normal font-normal text-white/25">{H['Category']}</span>}
           </div>
           <div className="grid grid-cols-2 gap-2">
             {CATEGORIES.map(cat => (
               <button key={cat} onClick={() => setCategory(cat)}
-                className={`py-2.5 px-3 rounded-xl text-[13px] font-medium border text-left transition-colors ${category === cat ? 'bg-[#8A9A5B] text-white border-[#8A9A5B]' : 'bg-white border-[#C8C2B8] text-[#2B2B2B]'}`}>
+                className={`py-2.5 px-3 rounded-xl text-[13px] font-medium border text-left transition-colors ${category === cat ? 'bg-[#8A9A5B] text-white border-[#8A9A5B]' : 'bg-[#1C1C1E] border-white/10 text-white'}`}>
                 {cat}
                 {hindiOn && H[cat] && <span className="block text-[9px] opacity-70 leading-none mt-0.5">{H[cat]}</span>}
               </button>
@@ -489,33 +489,33 @@ export default function Quote() {
 
         {/* Discount */}
         <div className="flex flex-col gap-2">
-          <div className="text-[10.5px] uppercase tracking-widest font-bold text-[#2B2B2B]/40">
+          <div className="text-[10.5px] uppercase tracking-widest font-bold text-white/40">
             Discount
-            {hindiOn && <span className="ml-1.5 normal-case tracking-normal font-normal text-[#2B2B2B]/25">{H['Discount']}</span>}
+            {hindiOn && <span className="ml-1.5 normal-case tracking-normal font-normal text-white/25">{H['Discount']}</span>}
           </div>
-          <div className="text-[11px] text-[#2B2B2B]/40 italic -mt-1">Applies to materials only — not stitching or making.</div>
+          <div className="text-[11px] text-white/40 italic -mt-1">Applies to materials only — not stitching or making.</div>
           <DiscountStrip value={discount} options={[0, 10, 15, 20, 25, 30]} onChange={setDiscount} />
         </div>
 
         {/* Breakdown */}
-        <div className="bg-white border border-[#C8C2B8] rounded-xl px-4 py-3.5 flex flex-col gap-2.5">
+        <div className="bg-[#1C1C1E] border border-white/10 rounded-xl px-4 py-3.5 flex flex-col gap-2.5">
           {computed.lines.map((l, i) => (
             <div key={i} className="flex justify-between items-baseline gap-2">
-              <span className="text-[12.5px] text-[#2B2B2B]/55">{l.label}</span>
-              <span className="text-[13px] text-[#2B2B2B] font-medium tabular-nums">{l.value}</span>
+              <span className="text-[12.5px] text-white/55">{l.label}</span>
+              <span className="text-[13px] text-white font-medium tabular-nums">{l.value}</span>
             </div>
           ))}
           {discount > 0 && (
             <div className="flex justify-between items-baseline">
-              <span className="text-[12.5px] text-[#2B2B2B]/55">Discount on materials ({discount}%)</span>
-              <span className="text-[13px] text-[#8A9A5B] font-semibold tabular-nums">− {formatINR(discountAmount)}</span>
+              <span className="text-[12.5px] text-white/55">Discount on materials ({discount}%)</span>
+              <span className="text-[13px] text-[#C5DE7A] font-semibold tabular-nums">− {formatINR(discountAmount)}</span>
             </div>
           )}
-          <div className="h-px bg-[#C8C2B8]/30 my-1" />
+          <div className="h-px bg-white/[0.08] my-1" />
           <div className="flex justify-between items-baseline">
-            <span className="text-[11px] uppercase tracking-widest font-bold text-[#2B2B2B]/40">Estimated total</span>
+            <span className="text-[11px] uppercase tracking-widest font-bold text-white/40">Estimated total</span>
             <div className="text-right">
-              <div className="text-[#8A9A5B] font-bold text-2xl tabular-nums">{formatINR(total)}</div>
+              <div className="text-[#C5DE7A] font-bold text-2xl tabular-nums">{formatINR(total)}</div>
             </div>
           </div>
         </div>
@@ -527,11 +527,11 @@ export default function Quote() {
             <Plus size={16} /> Add to cart
           </button>
           <button onClick={() => setShareCard(buildShareCard())}
-            className="flex-1 h-12 rounded-xl bg-white border border-[#C8C2B8] text-[#2B2B2B] font-semibold text-[14px] flex items-center justify-center gap-2">
+            className="flex-1 h-12 rounded-xl bg-[#252527] border border-white/10 text-white font-semibold text-[14px] flex items-center justify-center gap-2">
             <Share2 size={16} /> Share
           </button>
         </div>
-        <p className="text-[11px] text-[#2B2B2B]/35 text-center">
+        <p className="text-[11px] text-white/35 text-center">
           All prices incl. GST · Indicative, subject to final measurement.
         </p>
       </div>

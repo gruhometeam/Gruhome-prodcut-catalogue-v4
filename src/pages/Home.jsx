@@ -31,16 +31,16 @@ function SortChip({ sort, onSort }) {
     <div ref={ref} className="relative flex-shrink-0">
       <button
         onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12.5px] font-medium border border-[#C8C2B8] bg-[#FBF5E5] text-[#2B2B2B] whitespace-nowrap"
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12.5px] font-medium border border-white/10 bg-[#252527] text-white whitespace-nowrap"
       >
         <SlidersHorizontal size={13} /> {label}
         <ChevronDown size={12} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
-        <div className="absolute top-full mt-2 left-0 bg-white border border-[#C8C2B8] rounded-xl shadow-xl z-30 py-1 min-w-[180px]">
+        <div className="absolute top-full mt-2 left-0 bg-[#1C1C1E] border border-white/10 rounded-xl shadow-xl z-30 py-1 min-w-[180px]">
           {SORT_OPTIONS.map(s => (
             <button key={s.id} onClick={() => { onSort(s.id); setOpen(false); }}
-              className={`w-full text-left px-4 py-2.5 text-[13.5px] font-medium hover:bg-[#F4ECD8] ${sort === s.id ? 'text-[#8A9A5B] font-semibold' : 'text-[#2B2B2B]'}`}>
+              className={`w-full text-left px-4 py-2.5 text-[13.5px] font-medium hover:bg-white/[0.06] ${sort === s.id ? 'text-[#C5DE7A] font-semibold' : 'text-white'}`}>
               {s.label}
             </button>
           ))}
@@ -87,26 +87,26 @@ function PriceChip({ priceRange, onChange, priceBounds }) {
   return (
     <div ref={ref} className="relative flex-shrink-0">
       <button onClick={() => setOpen(o => !o)}
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12.5px] font-medium border whitespace-nowrap ${active ? 'bg-[#8A9A5B] text-white border-[#8A9A5B]' : 'border-[#C8C2B8] bg-white text-[#2B2B2B]'}`}>
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12.5px] font-medium border whitespace-nowrap ${active ? 'bg-[#8A9A5B] text-white border-[#8A9A5B]' : 'border-white/10 bg-[#1C1C1E] text-white'}`}>
         {chipLabel}
         <ChevronDown size={12} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
-        <div className="absolute top-full mt-2 left-0 bg-white border border-[#C8C2B8] rounded-xl shadow-xl z-30 p-4 min-w-[240px]">
-          <div className="text-[10.5px] uppercase tracking-widest font-bold text-[#2B2B2B]/40 mb-3">Price range (MRP)</div>
+        <div className="absolute top-full mt-2 left-0 bg-[#1C1C1E] border border-white/10 rounded-xl shadow-xl z-30 p-4 min-w-[240px]">
+          <div className="text-[10.5px] uppercase tracking-widest font-bold text-white/40 mb-3">Price range (MRP)</div>
           <div className="flex gap-2 items-end mb-3">
             <div className="flex-1 flex flex-col gap-1">
-              <span className="text-[10px] text-[#2B2B2B]/40">Min ₹</span>
+              <span className="text-[10px] text-white/40">Min ₹</span>
               <input type="number" inputMode="numeric" value={min} placeholder="0"
                 onChange={e => { setMin(e.target.value); apply(e.target.value, max); }}
-                className="w-full px-2.5 py-1.5 rounded-lg border border-[#C8C2B8] bg-[#FBF5E5] text-[13.5px] font-semibold text-[#2B2B2B] outline-none tabular-nums" />
+                className="w-full px-2.5 py-1.5 rounded-lg border border-white/10 bg-[#252527] text-[13.5px] font-semibold text-white outline-none tabular-nums" />
             </div>
-            <span className="text-[#2B2B2B]/40 text-sm pb-1.5">—</span>
+            <span className="text-white/40 text-sm pb-1.5">—</span>
             <div className="flex-1 flex flex-col gap-1">
-              <span className="text-[10px] text-[#2B2B2B]/40">Max ₹</span>
+              <span className="text-[10px] text-white/40">Max ₹</span>
               <input type="number" inputMode="numeric" value={max} placeholder="∞"
                 onChange={e => { setMax(e.target.value); apply(min, e.target.value); }}
-                className="w-full px-2.5 py-1.5 rounded-lg border border-[#C8C2B8] bg-[#FBF5E5] text-[13.5px] font-semibold text-[#2B2B2B] outline-none tabular-nums" />
+                className="w-full px-2.5 py-1.5 rounded-lg border border-white/10 bg-[#252527] text-[13.5px] font-semibold text-white outline-none tabular-nums" />
             </div>
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -114,14 +114,14 @@ function PriceChip({ priceRange, onChange, priceBounds }) {
               const isActive = (priceRange.min ?? null) === p.min && (priceRange.max ?? null) === p.max;
               return (
                 <button key={p.label} onClick={() => { setMin(p.min ?? ''); setMax(p.max ?? ''); apply(p.min, p.max); }}
-                  className={`px-2.5 py-1 rounded-full text-[11.5px] font-medium border ${isActive ? 'bg-[#8A9A5B] text-white border-[#8A9A5B]' : 'border-[#C8C2B8] text-[#2B2B2B]'}`}>
+                  className={`px-2.5 py-1 rounded-full text-[11.5px] font-medium border ${isActive ? 'bg-[#8A9A5B] text-white border-[#8A9A5B]' : 'border-white/10 text-white'}`}>
                   {p.label}
                 </button>
               );
             })}
           </div>
           {priceBounds && (
-            <div className="text-[10.5px] text-[#2B2B2B]/35 mt-2">
+            <div className="text-[10.5px] text-white/35 mt-2">
               Catalog: {formatINR(priceBounds.min)} – {formatINR(priceBounds.max)}
             </div>
           )}
@@ -262,8 +262,8 @@ export default function Home() {
 
   if (error && !products.length) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-8 text-center bg-[#F4ECD8]">
-        <h2 className="font-serif text-[32px] mb-4 text-[#2B2B2B]">Catalog Unavailable</h2>
+      <div className="min-h-screen flex flex-col items-center justify-center p-8 text-center bg-[#111111]">
+        <h2 className="font-serif text-[32px] mb-4 text-white">Catalog Unavailable</h2>
         <button onClick={retry} className="bg-[#8A9A5B] text-white px-8 py-3 rounded-full font-bold shadow-lg">
           Reconnect
         </button>
@@ -272,28 +272,28 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F4ECD8] pb-28 overflow-x-hidden selection:bg-[#8A9A5B]/20">
+    <div className="min-h-screen bg-[#111111] pb-28 overflow-x-hidden selection:bg-[#C5DE7A]/20">
       <div className="w-[96%] mx-auto py-8">
         <header className="mb-6 flex flex-col gap-4">
           {/* Title + Hindi toggle + count */}
           <div className="flex items-center justify-between">
-            <h1 className="font-serif text-[48px] text-[#2B2B2B] leading-none">Gruhome</h1>
+            <h1 className="font-serif text-[48px] text-white leading-none">Gruhome</h1>
             <div className="flex items-center gap-3">
               <button
                 onClick={toggleHindi}
                 title={hindiOn ? 'Hindi labels ON' : 'Hindi labels OFF'}
-                className={`text-[13px] font-bold px-2.5 py-1 rounded-lg border transition-colors ${hindiOn ? 'bg-[#8A9A5B] text-white border-[#8A9A5B]' : 'border-[#C8C2B8] text-[#2B2B2B]/45 bg-white'}`}
+                className={`text-[13px] font-bold px-2.5 py-1 rounded-lg border transition-colors ${hindiOn ? 'bg-[#8A9A5B] text-white border-[#8A9A5B]' : 'border-white/10 text-white/45 bg-[#1C1C1E]'}`}
               >
                 हि
               </button>
-              <span className="text-[11.5px] text-[#2B2B2B]/55 tabular-nums">
+              <span className="text-[11.5px] text-white/55 tabular-nums">
                 {filteredProducts.length} of {products.length}
               </span>
             </div>
           </div>
 
           {/* Search */}
-          <div className="w-full bg-[#F4ECD8] rounded-[12px] border border-[#C8C2B8] shadow-sm overflow-hidden h-[64px] flex items-center">
+          <div className="w-full bg-[#1C1C1E] rounded-[12px] border border-white/10 shadow-sm overflow-hidden h-[64px] flex items-center">
             <SearchBar value={searchInput} onChange={handleSearch} placeholder="Search design, brand, book…" />
           </div>
 
@@ -303,11 +303,11 @@ export default function Home() {
             <PriceChip priceRange={priceRange} onChange={setPriceRange} priceBounds={priceBounds} />
             <div className="flex gap-1 ml-auto flex-shrink-0">
               <button onClick={() => setLayout('grid')}
-                className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-colors ${layout === 'grid' ? 'bg-[#8A9A5B] border-[#8A9A5B] text-white' : 'border-[#C8C2B8] bg-white text-[#2B2B2B]/55'}`}>
+                className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-colors ${layout === 'grid' ? 'bg-[#8A9A5B] border-[#8A9A5B] text-white' : 'border-white/10 bg-[#1C1C1E] text-white/55'}`}>
                 <LayoutGrid size={15} />
               </button>
               <button onClick={() => setLayout('list')}
-                className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-colors ${layout === 'list' ? 'bg-[#8A9A5B] border-[#8A9A5B] text-white' : 'border-[#C8C2B8] bg-white text-[#2B2B2B]/55'}`}>
+                className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-colors ${layout === 'list' ? 'bg-[#8A9A5B] border-[#8A9A5B] text-white' : 'border-white/10 bg-[#1C1C1E] text-white/55'}`}>
                 <List size={15} />
               </button>
             </div>
@@ -320,7 +320,7 @@ export default function Home() {
             </div>
             {activeCount > 0 && (
               <button onClick={clearAll}
-                className="flex-shrink-0 text-[11px] uppercase tracking-wider text-[#8A9A5B] font-bold px-2">
+                className="flex-shrink-0 text-[11px] uppercase tracking-wider text-[#C5DE7A] font-bold px-2">
                 Clear {activeCount}
               </button>
             )}
@@ -331,12 +331,12 @@ export default function Home() {
         {loading && !products.length ? (
           <div className={layout === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8' : 'flex flex-col gap-3'}>
             {[1, 2, 3, 4, 5, 6].map(i => (
-              <div key={i} className={`bg-white rounded-[12px] animate-pulse border border-[#C8C2B8] ${layout === 'grid' ? 'h-[240px]' : 'h-16'}`} />
+              <div key={i} className={`bg-[#1C1C1E] rounded-[12px] animate-pulse border border-white/[0.08] ${layout === 'grid' ? 'h-[240px]' : 'h-16'}`} />
             ))}
           </div>
         ) : filteredProducts.length === 0 ? (
           <div className="text-center py-32">
-            <p className="font-serif text-[24px] text-[#2B2B2B]/30 italic">No matches in our collection</p>
+            <p className="font-serif text-[24px] text-white/30 italic">No matches in our collection</p>
           </div>
         ) : layout === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -344,7 +344,7 @@ export default function Home() {
               <ProductCard key={i} product={product} headers={headers} layout="grid" onSelect={handleSelect} />
             ))}
             {filteredProducts.length > 150 && (
-              <div className="col-span-full text-center py-6 text-[13px] text-[#2B2B2B]/40">
+              <div className="col-span-full text-center py-6 text-[13px] text-white/40">
                 Showing 150 of {filteredProducts.length} — search or filter to narrow
               </div>
             )}
@@ -355,7 +355,7 @@ export default function Home() {
               <ProductCard key={i} product={product} headers={headers} layout="list" onSelect={handleSelect} />
             ))}
             {filteredProducts.length > 150 && (
-              <div className="text-center py-6 text-[13px] text-[#2B2B2B]/40">
+              <div className="text-center py-6 text-[13px] text-white/40">
                 Showing 150 of {filteredProducts.length} — search or filter to narrow
               </div>
             )}
@@ -366,20 +366,20 @@ export default function Home() {
       {/* Product detail modal */}
       {selectedProduct && (
         <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-[10000] px-4"
+          className="fixed inset-0 bg-black/70 flex items-center justify-center z-[10000] px-4"
           onClick={() => setSelectedProduct(null)}
         >
           <div
-            className="bg-white rounded-2xl w-full max-w-[90%] md:max-w-[560px] max-h-[85vh] overflow-y-auto shadow-2xl flex flex-col"
+            className="bg-[#1C1C1E] rounded-2xl w-full max-w-[90%] md:max-w-[560px] max-h-[85vh] overflow-y-auto shadow-2xl flex flex-col"
             onClick={e => e.stopPropagation()}
           >
             {/* Sticky modal header */}
-            <div className="sticky top-0 bg-white border-b border-[#C8C2B8]/20 flex justify-between items-start px-6 pt-5 pb-4 z-10">
-              <h2 className="font-serif text-[28px] text-[#2B2B2B] leading-tight pr-6">
+            <div className="sticky top-0 bg-[#1C1C1E] border-b border-white/[0.06] flex justify-between items-start px-6 pt-5 pb-4 z-10">
+              <h2 className="font-serif text-[28px] text-white leading-tight pr-6">
                 {selectedProduct['DESIGN NAME'] || selectedProduct[headers?.[0]]}
               </h2>
               <button onClick={() => setSelectedProduct(null)}
-                className="p-2 hover:bg-[#F4ECD8] rounded-full transition-colors text-[#2B2B2B]/35 flex-shrink-0">
+                className="p-2 hover:bg-white/[0.06] rounded-full transition-colors text-white/35 flex-shrink-0">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -393,9 +393,9 @@ export default function Home() {
                 const isPrice = !isNaN(parseFloat(value.toString().replace(/[^0-9.]/g, ''))) &&
                   (h.includes('price') || h.includes('rrp') || h.includes('mrp') || h.includes('rate'));
                 return (
-                  <div key={header} className="flex flex-col gap-1 border-b border-[#C8C2B8]/10 pb-4 last:border-0">
-                    <span className="text-[10px] uppercase tracking-[2px] text-[#2B2B2B]/40 font-bold">{header}</span>
-                    <span className={`text-[18px] font-medium ${isPrice ? 'text-[#8A9A5B] font-bold' : 'text-[#2B2B2B]'}`}>
+                  <div key={header} className="flex flex-col gap-1 border-b border-white/[0.04] pb-4 last:border-0">
+                    <span className="text-[10px] uppercase tracking-[2px] text-white/40 font-bold">{header}</span>
+                    <span className={`text-[18px] font-medium ${isPrice ? 'text-[#C5DE7A] font-bold' : 'text-white'}`}>
                       {isPrice
                         ? new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 })
                             .format(parseFloat(value.toString().replace(/[^0-9.]/g, '')))
@@ -407,10 +407,10 @@ export default function Home() {
             </div>
 
             {/* Sticky action bar */}
-            <div className="sticky bottom-0 bg-white border-t border-[#C8C2B8]/20 px-6 py-4 flex gap-3">
+            <div className="sticky bottom-0 bg-[#1C1C1E] border-t border-white/[0.06] px-6 py-4 flex gap-3">
               <button
                 onClick={() => { const card = buildProductShareCard(selectedProduct); setSelectedProduct(null); setShareCard(card); }}
-                className="flex-1 h-11 rounded-xl bg-white border border-[#C8C2B8] text-[#2B2B2B] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-[#F4ECD8] transition-colors"
+                className="flex-1 h-11 rounded-xl bg-[#252527] border border-white/10 text-white text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-white/[0.06] transition-colors"
               >
                 Share
               </button>

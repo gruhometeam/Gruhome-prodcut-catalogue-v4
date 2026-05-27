@@ -15,7 +15,7 @@ function AppInner() {
   const showTabBar = pathname === '/' || pathname === '/cart';
 
   return (
-    <div className="min-h-screen bg-[#F4ECD8]">
+    <div className="min-h-screen bg-[#111111]">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/details/:id" element={<Details />} />

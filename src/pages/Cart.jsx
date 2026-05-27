@@ -7,35 +7,35 @@ import ShareModal from '../components/ShareModal';
 
 function CartItem({ item, onRemove }) {
   return (
-    <div className="bg-white border border-[#C8C2B8]/50 rounded-xl p-3.5 flex flex-col gap-2.5">
+    <div className="bg-[#1C1C1E] border border-white/[0.08] rounded-xl p-3.5 flex flex-col gap-2.5">
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-lg bg-[#FBF5E5] border border-[#C8C2B8]/40 flex-shrink-0" />
+        <div className="w-10 h-10 rounded-lg bg-[#252527] border border-white/[0.06] flex-shrink-0" />
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline justify-between gap-2">
-            <span className="font-serif text-[16px] font-semibold text-[#2B2B2B] truncate leading-tight">
+            <span className="font-serif text-[16px] font-semibold text-white truncate leading-tight">
               {item.product['DESIGN NAME'] || 'Unknown'}
             </span>
-            <button onClick={onRemove} className="text-[#2B2B2B]/35 flex-shrink-0 p-1 -mr-1">
+            <button onClick={onRemove} className="text-white/35 flex-shrink-0 p-1 -mr-1">
               <X size={16} />
             </button>
           </div>
-          <div className="text-[11.5px] text-[#2B2B2B]/55 mt-0.5 truncate">
+          <div className="text-[11.5px] text-white/55 mt-0.5 truncate">
             {item.product['BRAND NAME']}{item.product['BOOK NAME'] ? `  ·  ${item.product['BOOK NAME']}` : ''}
           </div>
           {item.qqn && (
-            <div className="text-[10px] font-mono text-[#2B2B2B]/35 tracking-wide mt-0.5">{item.qqn}</div>
+            <div className="text-[10px] font-mono text-white/35 tracking-wide mt-0.5">{item.qqn}</div>
           )}
         </div>
       </div>
-      <div className="flex items-center justify-between bg-[#FBF5E5] rounded-lg px-3 py-2.5">
+      <div className="flex items-center justify-between bg-[#252527] rounded-lg px-3 py-2.5">
         <div className="min-w-0">
-          <div className="text-[10px] uppercase tracking-widest font-bold text-[#2B2B2B]/40">{item.mode}</div>
-          <div className="text-[11.5px] text-[#2B2B2B] mt-0.5 truncate">{item.summary}</div>
+          <div className="text-[10px] uppercase tracking-widest font-bold text-white/40">{item.mode}</div>
+          <div className="text-[11.5px] text-white mt-0.5 truncate">{item.summary}</div>
           {item.discount > 0 && (
-            <div className="text-[10px] text-[#8A9A5B] font-semibold mt-0.5">{item.discount}% off materials</div>
+            <div className="text-[10px] text-[#C5DE7A] font-semibold mt-0.5">{item.discount}% off materials</div>
           )}
         </div>
-        <span className="text-[#8A9A5B] font-bold text-[16px] tabular-nums flex-shrink-0 ml-2">{formatINR(item.total)}</span>
+        <span className="text-[#C5DE7A] font-bold text-[16px] tabular-nums flex-shrink-0 ml-2">{formatINR(item.total)}</span>
       </div>
     </div>
   );
@@ -94,12 +94,12 @@ export default function Cart() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4ECD8] pb-24">
+    <div className="min-h-screen bg-[#111111] pb-24">
       {/* Header */}
       <div className="px-5 pt-8 pb-4">
         <div className="flex items-baseline justify-between mb-4">
-          <h1 className="font-serif text-[42px] text-[#2B2B2B] leading-none">Cart</h1>
-          <span className="text-[11.5px] text-[#2B2B2B]/55">{cart.length} item{cart.length !== 1 ? 's' : ''}</span>
+          <h1 className="font-serif text-[42px] text-white leading-none">Cart</h1>
+          <span className="text-[11.5px] text-white/55">{cart.length} item{cart.length !== 1 ? 's' : ''}</span>
         </div>
         {cart.length > 0 && (
           <input
@@ -107,19 +107,19 @@ export default function Cart() {
             placeholder="Client name (optional)"
             value={clientName}
             onChange={e => setClientName(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#C8C2B8] text-[#2B2B2B] text-[14px] placeholder-[#2B2B2B]/30 outline-none"
+            className="w-full px-4 py-2.5 rounded-xl bg-[#1C1C1E] border border-white/10 text-white text-[14px] placeholder-white/30 outline-none"
           />
         )}
       </div>
 
       {cart.length === 0 ? (
         <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4 text-center px-8">
-          <div className="w-14 h-14 rounded-2xl bg-white border border-[#C8C2B8] flex items-center justify-center text-[#2B2B2B]/35">
+          <div className="w-14 h-14 rounded-2xl bg-[#1C1C1E] border border-white/10 flex items-center justify-center text-white/35">
             <Search size={24} />
           </div>
           <div>
-            <h2 className="font-serif text-2xl text-[#2B2B2B] mb-1">Cart is empty</h2>
-            <p className="text-[13px] text-[#2B2B2B]/55 leading-relaxed max-w-xs">
+            <h2 className="font-serif text-2xl text-white mb-1">Cart is empty</h2>
+            <p className="text-[13px] text-white/55 leading-relaxed max-w-xs">
               Add quotes from the catalog — multiple items land here with a single grand total.
             </p>
           </div>
@@ -137,14 +137,14 @@ export default function Cart() {
           </div>
 
           {/* Sticky total bar */}
-          <div className="fixed bottom-16 left-0 right-0 bg-white border-t border-[#C8C2B8] px-4 py-3 flex flex-col gap-2.5 z-20">
+          <div className="fixed bottom-16 left-0 right-0 bg-[#1C1C1E] border-t border-white/10 px-4 py-3 flex flex-col gap-2.5 z-20">
             <div className="flex items-baseline justify-between">
-              <span className="text-[11px] uppercase tracking-widest font-bold text-[#2B2B2B]/40">Grand total</span>
-              <span className="text-[#8A9A5B] font-bold text-2xl tabular-nums">{formatINR(grandTotal)}</span>
+              <span className="text-[11px] uppercase tracking-widest font-bold text-white/40">Grand total</span>
+              <span className="text-[#C5DE7A] font-bold text-2xl tabular-nums">{formatINR(grandTotal)}</span>
             </div>
             <div className="flex gap-2">
               <button onClick={() => { clearCart(); showToast('Cart cleared'); }}
-                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-[#C8C2B8] text-[#2B2B2B]/55 text-[13px] font-semibold">
+                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-white/10 text-white/55 text-[13px] font-semibold">
                 <Trash2 size={14} /> Clear
               </button>
               <button onClick={() => setShareCard(buildShareCard())}

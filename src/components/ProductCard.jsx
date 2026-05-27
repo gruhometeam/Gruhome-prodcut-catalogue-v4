@@ -28,7 +28,7 @@ function CardGrid({ product, headers, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-[14px] p-6 border border-[#C8C2B8]/40 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition cursor-pointer flex flex-col gap-4 [touch-action:manipulation]"
+      className="bg-[#1C1C1E] rounded-[14px] p-6 border border-white/[0.08] shadow-sm hover:shadow-md hover:-translate-y-0.5 transition cursor-pointer flex flex-col gap-4 [touch-action:manipulation]"
     >
       {displayKeys.map((header, index) => {
         const value = product[header];
@@ -38,15 +38,15 @@ function CardGrid({ product, headers, onClick }) {
 
         if (index === 0) {
           return (
-            <h3 key={header} className="font-serif text-[26px] text-[#2B2B2B] leading-tight m-0 font-semibold">
+            <h3 key={header} className="font-serif text-[26px] text-white leading-tight m-0 font-semibold">
               {formatted}
             </h3>
           );
         }
         return (
           <div key={header} className="flex flex-col gap-0.5">
-            <span className="text-[10px] uppercase tracking-[1.5px] text-[#2B2B2B]/40 font-bold">{header}</span>
-            <span className={`text-[16px] font-medium leading-snug ${isPrice ? 'text-[#8A9A5B] font-bold' : 'text-[#2B2B2B]'}`}>
+            <span className="text-[10px] uppercase tracking-[1.5px] text-white/40 font-bold">{header}</span>
+            <span className={`text-[16px] font-medium leading-snug ${isPrice ? 'text-[#C5DE7A] font-bold' : 'text-white'}`}>
               {formatted}
             </span>
           </div>
@@ -67,15 +67,15 @@ function CardList({ product, headers, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-xl px-4 py-3 border border-[#C8C2B8]/40 flex items-center gap-3 cursor-pointer hover:shadow-sm transition-colors [touch-action:manipulation]"
+      className="bg-[#1C1C1E] rounded-xl px-4 py-3 border border-white/[0.08] flex items-center gap-3 cursor-pointer hover:bg-white/[0.04] transition-colors [touch-action:manipulation]"
     >
       <div className="flex-1 min-w-0">
-        <div className="font-serif text-[17px] font-semibold text-[#2B2B2B] truncate leading-tight">{designName}</div>
-        {sub && <div className="text-[11.5px] text-[#2B2B2B]/50 truncate mt-0.5">{sub}</div>}
+        <div className="font-serif text-[17px] font-semibold text-white truncate leading-tight">{designName}</div>
+        {sub && <div className="text-[11.5px] text-white/50 truncate mt-0.5">{sub}</div>}
       </div>
       {!isNaN(mrp) && (
         <div className="text-right flex-shrink-0">
-          <div className="text-[#8A9A5B] font-bold text-[17px] tabular-nums">{formatINR(mrp)}</div>
+          <div className="text-[#C5DE7A] font-bold text-[17px] tabular-nums">{formatINR(mrp)}</div>
         </div>
       )}
     </div>

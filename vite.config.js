@@ -14,8 +14,8 @@ export default defineConfig({
         name: 'Gruhome',
         short_name: 'Gruhome',
         description: 'Gruhome product catalogue & quick quote tool',
-        theme_color: '#8A9A5B',
-        background_color: '#ffffff',
+        theme_color: '#111111',
+        background_color: '#111111',
         display: 'standalone',
         icons: [
           {
