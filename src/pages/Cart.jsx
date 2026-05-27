@@ -140,10 +140,7 @@ export default function Cart() {
           <div className="fixed bottom-16 left-0 right-0 bg-white border-t border-[#C8C2B8] px-4 py-3 flex flex-col gap-2.5 z-20">
             <div className="flex items-baseline justify-between">
               <span className="text-[11px] uppercase tracking-widest font-bold text-[#2B2B2B]/40">Grand total</span>
-              <div className="text-right">
-                <span className="text-[#8A9A5B] font-bold text-2xl tabular-nums">{formatINR(grandTotal)}</span>
-                <div className="text-[9.5px] text-[#2B2B2B]/35 mt-0.5">incl. GST</div>
-              </div>
+              <span className="text-[#8A9A5B] font-bold text-2xl tabular-nums">{formatINR(grandTotal)}</span>
             </div>
             <div className="flex gap-2">
               <button onClick={() => { clearCart(); showToast('Cart cleared'); }}

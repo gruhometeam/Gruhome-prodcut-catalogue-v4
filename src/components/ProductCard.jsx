@@ -49,9 +49,6 @@ function CardGrid({ product, headers, onClick }) {
             <span className={`text-[16px] font-medium leading-snug ${isPrice ? 'text-[#8A9A5B] font-bold' : 'text-[#2B2B2B]'}`}>
               {formatted}
             </span>
-            {isPrice && (
-              <span className="text-[9.5px] text-[#2B2B2B]/35 font-normal -mt-0.5">incl. GST</span>
-            )}
           </div>
         );
       })}
@@ -79,7 +76,6 @@ function CardList({ product, headers, onClick }) {
       {!isNaN(mrp) && (
         <div className="text-right flex-shrink-0">
           <div className="text-[#8A9A5B] font-bold text-[17px] tabular-nums">{formatINR(mrp)}</div>
-          <div className="text-[9.5px] text-[#2B2B2B]/35 mt-0.5">incl. GST</div>
         </div>
       )}
     </div>

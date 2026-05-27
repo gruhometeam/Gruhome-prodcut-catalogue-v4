@@ -93,7 +93,7 @@ function PriceChip({ priceRange, onChange, priceBounds }) {
       </button>
       {open && (
         <div className="absolute top-full mt-2 left-0 bg-white border border-[#C8C2B8] rounded-xl shadow-xl z-30 p-4 min-w-[240px]">
-          <div className="text-[10.5px] uppercase tracking-widest font-bold text-[#2B2B2B]/40 mb-3">Price range (RRP)</div>
+          <div className="text-[10.5px] uppercase tracking-widest font-bold text-[#2B2B2B]/40 mb-3">Price range (MRP)</div>
           <div className="flex gap-2 items-end mb-3">
             <div className="flex-1 flex flex-col gap-1">
               <span className="text-[10px] text-[#2B2B2B]/40">Min ₹</span>
@@ -170,7 +170,7 @@ export default function Home() {
   }, [products]);
 
   const priceBounds = useMemo(() => {
-    const nums = products.map(p => parseFloat(p['RRP'])).filter(n => !isNaN(n));
+    const nums = products.map(p => parseFloat(p['MRP'])).filter(n => !isNaN(n));
     if (!nums.length) return null;
     return { min: Math.min(...nums), max: Math.max(...nums) };
   }, [products]);
@@ -191,12 +191,12 @@ export default function Home() {
     });
 
     // Price range filter
-    if (priceRange.min != null) list = list.filter(p => parseFloat(p['RRP']) >= priceRange.min);
-    if (priceRange.max != null) list = list.filter(p => parseFloat(p['RRP']) <= priceRange.max);
+    if (priceRange.min != null) list = list.filter(p => parseFloat(p['MRP']) >= priceRange.min);
+    if (priceRange.max != null) list = list.filter(p => parseFloat(p['MRP']) <= priceRange.max);
 
     // Sort
-    if (sort === 'price-asc') list.sort((a, b) => parseFloat(a['RRP']) - parseFloat(b['RRP']));
-    else if (sort === 'price-desc') list.sort((a, b) => parseFloat(b['RRP']) - parseFloat(a['RRP']));
+    if (sort === 'price-asc') list.sort((a, b) => parseFloat(a['MRP']) - parseFloat(b['MRP']));
+    else if (sort === 'price-desc') list.sort((a, b) => parseFloat(b['MRP']) - parseFloat(a['MRP']));
     else list.sort((a, b) => (a['DESIGN NAME'] || '').localeCompare(b['DESIGN NAME'] || ''));
 
     return list;
@@ -221,7 +221,7 @@ export default function Home() {
     const design = product['DESIGN NAME'] || product['DESIGN NAME ALT'] || 'Unknown';
     const brand = product['BRAND NAME'] || '';
     const book = product['BOOK NAME'] || '';
-    const rrp = parseFloat(product['RRP']) || 0;
+    const mrp = parseFloat(product['MRP']) || 0;
     const code = product['PRICE CODE'] || '';
     const text = [
       `*Gruhome*  ·  ${design}`,
@@ -229,7 +229,7 @@ export default function Home() {
       book && `Book: ${book}`,
       code && `Code: ${code}`,
       ``,
-      `*RRP: ${formatINR(rrp)} per metre*`,
+      `*MRP: ${formatINR(mrp)} per metre*`,
       ``,
       `_All prices inclusive of GST · Subject to availability._`,
     ].filter(Boolean).join('\n');
@@ -240,8 +240,8 @@ export default function Home() {
         book  && { label: 'Book',       value: book },
         code  && { label: 'Price code', value: code, mono: true },
       ].filter(Boolean),
-      priceLabel: 'Retail price',
-      priceValue: formatINR(rrp),
+      priceLabel: 'MRP',
+      priceValue: formatINR(mrp),
       priceUnit: 'per metre',
       footer: 'All prices inclusive of GST · Subject to availability.',
       text,
@@ -401,9 +401,6 @@ export default function Home() {
                             .format(parseFloat(value.toString().replace(/[^0-9.]/g, '')))
                         : value}
                     </span>
-                    {isPrice && (
-                      <span className="text-[9.5px] text-[#2B2B2B]/35 -mt-0.5">incl. GST</span>
-                    )}
                   </div>
                 );
               })}

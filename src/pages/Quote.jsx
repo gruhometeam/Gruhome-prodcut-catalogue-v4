@@ -252,7 +252,7 @@ export default function Quote() {
     );
   }
 
-  const price      = parseFloat(product['RRP']) || 0;
+  const price      = parseFloat(product['MRP']) || 0;
   const designName = product['DESIGN NAME'] || product['DESIGN NAME ALT'] || 'Unknown';
   const brandName  = product['BRAND NAME'] || '';
   const bookName   = product['BOOK NAME'] || '';
@@ -372,7 +372,7 @@ export default function Quote() {
           </div>
           <div className="text-right flex-shrink-0">
             <div className="text-[#8A9A5B] font-bold text-lg tabular-nums">{formatINR(price)}</div>
-            <div className="text-[9.5px] text-[#2B2B2B]/35">{UNIT_BY_CATEGORY[category]} · incl. GST</div>
+            <div className="text-[9.5px] text-[#2B2B2B]/35">{UNIT_BY_CATEGORY[category]}</div>
           </div>
         </div>
 
@@ -516,7 +516,6 @@ export default function Quote() {
             <span className="text-[11px] uppercase tracking-widest font-bold text-[#2B2B2B]/40">Estimated total</span>
             <div className="text-right">
               <div className="text-[#8A9A5B] font-bold text-2xl tabular-nums">{formatINR(total)}</div>
-              <div className="text-[9.5px] text-[#2B2B2B]/35">incl. GST</div>
             </div>
           </div>
         </div>
