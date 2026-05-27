@@ -64,7 +64,7 @@ function CardList({ product, headers, onClick }) {
   const designName = product['DESIGN NAME'] || product[headers?.[0]] || 'Unknown';
   const brand = product['BRAND NAME'] || '';
   const book = product['BOOK NAME'] || '';
-  const rrp = parseFloat(product['RRP']);
+  const mrp = parseFloat(product['MRP']);
   const sub = [brand, book].filter(Boolean).join('  ·  ');
 
   return (
@@ -76,9 +76,9 @@ function CardList({ product, headers, onClick }) {
         <div className="font-serif text-[17px] font-semibold text-[#2B2B2B] truncate leading-tight">{designName}</div>
         {sub && <div className="text-[11.5px] text-[#2B2B2B]/50 truncate mt-0.5">{sub}</div>}
       </div>
-      {!isNaN(rrp) && (
+      {!isNaN(mrp) && (
         <div className="text-right flex-shrink-0">
-          <div className="text-[#8A9A5B] font-bold text-[17px] tabular-nums">{formatINR(rrp)}</div>
+          <div className="text-[#8A9A5B] font-bold text-[17px] tabular-nums">{formatINR(mrp)}</div>
           <div className="text-[9.5px] text-[#2B2B2B]/35 mt-0.5">incl. GST</div>
         </div>
       )}

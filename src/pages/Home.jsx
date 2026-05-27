@@ -152,22 +152,33 @@ export default function Home() {
   const [shareCard, setShareCard] = useState(null);
   const handleSelect = useCallback((p) => setSelectedProduct(p), []);
 
-  // Only BRAND NAME and BOOK NAME are meaningful filter dimensions.
-  // All other columns (DESIGN NAME, PRICE CODE, RRP, etc.) have hundreds–thousands
-  // of unique values and would make dropdowns unusably slow.
-  const FILTER_KEYS = ['BRAND NAME', 'BOOK NAME'];
+  // Columns excluded from filtering — either numeric/price (handled by
+  // the price range chip) or high-cardinality identifiers (1000s of values).
+  const SKIP_FILTER_KEYS = new Set([
+    'RRP', 'MRP', 'GST', 'DESIGN NAME', 'DESIGN NAME ALT', 'PRICE CODE', 'Last Update',
+  ]);
+  // Safety ceiling: auto-exclude any column that has more than 200 unique values.
+  const MAX_FILTER_OPTIONS = 200;
 
   const filterSpecs = useMemo(() => {
     if (!products?.length) return [];
-    return FILTER_KEYS.map(key => {
-      const seen = new Set();
-      for (const p of products) {
-        const v = p[key];
-        if (v != null && v !== '' && v !== '0' && v !== 'N/A') seen.add(v.toString().trim());
-      }
-      const uniqueValues = Array.from(seen).sort();
-      return uniqueValues.length > 0 ? { key, label: key, options: uniqueValues } : null;
-    }).filter(Boolean);
+    const allKeys = Object.keys(products[0] || {});
+    return allKeys
+      .filter(key => !SKIP_FILTER_KEYS.has(key))
+      .map(key => {
+        const seen = new Set();
+        let tooMany = false;
+        for (const p of products) {
+          const v = p[key];
+          if (v != null && v !== '' && v !== '0' && v !== 'N/A') {
+            seen.add(v.toString().trim());
+            if (seen.size > MAX_FILTER_OPTIONS) { tooMany = true; break; }
+          }
+        }
+        if (tooMany || seen.size < 2) return null;
+        return { key, label: key, options: Array.from(seen).sort() };
+      })
+      .filter(Boolean);
   }, [products]);
 
   const priceBounds = useMemo(() => {
