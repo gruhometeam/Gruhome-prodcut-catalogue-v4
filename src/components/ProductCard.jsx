@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react';
 import { formatINR } from '../utils/format';
 
 function formatValue(header, val) {
@@ -27,7 +28,7 @@ function CardGrid({ product, headers, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-[14px] p-6 border border-[#C8C2B8]/40 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col gap-4 [touch-action:manipulation]"
+      className="bg-white rounded-[14px] p-6 border border-[#C8C2B8]/40 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition cursor-pointer flex flex-col gap-4 [touch-action:manipulation]"
     >
       {displayKeys.map((header, index) => {
         const value = product[header];
@@ -69,7 +70,7 @@ function CardList({ product, headers, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-xl px-4 py-3 border border-[#C8C2B8]/40 flex items-center gap-3 cursor-pointer hover:shadow-sm transition-all [touch-action:manipulation]"
+      className="bg-white rounded-xl px-4 py-3 border border-[#C8C2B8]/40 flex items-center gap-3 cursor-pointer hover:shadow-sm transition-colors [touch-action:manipulation]"
     >
       <div className="flex-1 min-w-0">
         <div className="font-serif text-[17px] font-semibold text-[#2B2B2B] truncate leading-tight">{designName}</div>
@@ -85,8 +86,11 @@ function CardList({ product, headers, onClick }) {
   );
 }
 
-export default function ProductCard({ product, headers, onClick, layout = 'grid' }) {
+// ── Memoized export — skips re-render when only Home's modal/dropdown
+//    state changes; onClick is stabilised via useCallback inside.
+export default memo(function ProductCard({ product, headers, onSelect, layout = 'grid' }) {
+  const handleClick = useCallback(() => onSelect(product), [onSelect, product]);
   return layout === 'list'
-    ? <CardList product={product} headers={headers} onClick={onClick} />
-    : <CardGrid product={product} headers={headers} onClick={onClick} />;
-}
+    ? <CardList product={product} headers={headers} onClick={handleClick} />
+    : <CardGrid product={product} headers={headers} onClick={handleClick} />;
+});

@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect, useContext } from 'react';
+import { useState, useMemo, useRef, useEffect, useContext, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProducts } from '../hooks/useProducts';
 import SearchBar from '../components/SearchBar';
@@ -143,6 +143,7 @@ export default function Home() {
   const [layout, setLayout] = useState('grid');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [shareCard, setShareCard] = useState(null);
+  const handleSelect = useCallback((p) => setSelectedProduct(p), []);
 
   const filterSpecs = useMemo(() => {
     if (!headers?.length || !products?.length) return [];
@@ -328,17 +329,27 @@ export default function Home() {
           </div>
         ) : layout === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProducts.map((product, i) => (
+            {filteredProducts.slice(0, 150).map((product, i) => (
               <ProductCard key={i} product={product} headers={headers} layout="grid"
-                onClick={() => setSelectedProduct(product)} />
+                onSelect={handleSelect} />
             ))}
+            {filteredProducts.length > 150 && (
+              <div className="col-span-full text-center py-6 text-[13px] text-[#2B2B2B]/40">
+                Showing 150 of {filteredProducts.length} — search or filter to narrow
+              </div>
+            )}
           </div>
         ) : (
           <div className="flex flex-col gap-2.5">
-            {filteredProducts.map((product, i) => (
+            {filteredProducts.slice(0, 150).map((product, i) => (
               <ProductCard key={i} product={product} headers={headers} layout="list"
-                onClick={() => setSelectedProduct(product)} />
+                onSelect={handleSelect} />
             ))}
+            {filteredProducts.length > 150 && (
+              <div className="text-center py-6 text-[13px] text-[#2B2B2B]/40">
+                Showing 150 of {filteredProducts.length} — search or filter to narrow
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -346,7 +357,7 @@ export default function Home() {
       {/* Product detail modal */}
       {selectedProduct && (
         <div
-          className="fixed inset-0 bg-black/45 backdrop-blur-sm flex items-center justify-center z-[10000] px-4"
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-[10000] px-4"
           onClick={() => setSelectedProduct(null)}
         >
           <div
