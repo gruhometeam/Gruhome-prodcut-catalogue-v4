@@ -243,6 +243,7 @@ export default function Quote() {
   const [blind, setBlind]           = useState({ widthFt: 4, heightFt: 5 });
   const [discount, setDiscount] = useState(0);
   const [lining, setLining]     = useState({ enabled: false, pricePerMetre: 450 });
+  const [price, setPrice]       = useState(() => parseFloat(product?.['MRP']) || 0);
   const [shareCard, setShareCard] = useState(null);
 
   if (!product) {
@@ -256,7 +257,6 @@ export default function Quote() {
     );
   }
 
-  const price      = parseFloat(product['MRP']) || 0;
   const designName = product['DESIGN NAME'] || product['DESIGN NAME ALT'] || 'Unknown';
   const brandName  = product['BRAND NAME'] || '';
   const bookName   = product['BOOK NAME'] || '';
@@ -399,8 +399,17 @@ export default function Quote() {
             </div>
           </div>
           <div className="text-right flex-shrink-0">
-            <div className="text-[#C5DE7A] font-bold text-lg tabular-nums">{formatINR(price)}</div>
-            <div className="text-[9.5px] text-white/35">{UNIT_BY_CATEGORY[category]}</div>
+            <div className="flex items-center gap-1 justify-end">
+              <span className="text-[#C5DE7A]/70 font-bold text-[15px]">₹</span>
+              <input
+                type="number"
+                inputMode="numeric"
+                value={price}
+                onChange={e => setPrice(Math.max(0, Number(e.target.value)))}
+                className="w-[84px] bg-[#252527] border border-[#C5DE7A]/30 focus:border-[#C5DE7A]/70 rounded-lg px-2 py-1 text-[#C5DE7A] font-bold text-[15px] tabular-nums text-right outline-none transition-colors"
+              />
+            </div>
+            <div className="text-[9.5px] text-white/35 text-right mt-1">{UNIT_BY_CATEGORY[category]}</div>
           </div>
         </div>
 
