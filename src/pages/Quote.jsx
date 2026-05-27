@@ -32,6 +32,7 @@ function computeCurtain(price, m) {
     ],
     materials: fabricCost,
     labor: stitchingCost,
+    metres: totalMetres,
     summaryLabel: `${m.wallWidthFt}×${m.wallHeightFt} ft · ${m.installation} · ${panels} panels · ${totalMetres} m`,
   };
 }
@@ -56,6 +57,7 @@ function computeRoman(price, m) {
     ],
     materials: fabricCost,
     labor: makingCost,
+    metres: totalMetres,
     summaryLabel: `Roman ${m.wallWidthFt}×${m.wallHeightFt} ft · ${totalMetres} m`,
   };
 }
@@ -65,6 +67,7 @@ function computeFabricOnly(price, m) {
   return {
     lines: [{ label: `${m.metres} m × ${formatINR(price)}/m`, value: formatINR(cost) }],
     materials: cost, labor: 0,
+    metres: m.metres,
     summaryLabel: `${m.metres} m fabric`,
   };
 }
@@ -239,6 +242,7 @@ export default function Quote() {
   const [wallpaper, setWallpaper]   = useState({ wallWidthFt: 12, wallHeightFt: 10, designType: 'simple' });
   const [blind, setBlind]           = useState({ widthFt: 4, heightFt: 5 });
   const [discount, setDiscount] = useState(0);
+  const [lining, setLining]     = useState({ enabled: false, pricePerMetre: 450 });
   const [shareCard, setShareCard] = useState(null);
 
   if (!product) {
@@ -273,8 +277,12 @@ export default function Quote() {
     return { lines: [], materials: 0, labor: 0, summaryLabel: '' };
   }, [category, mode, curtain, roman, fabricOnly, upholstery, wallpaper, blind, price]);
 
-  const discountAmount = Math.round(computed.materials * (discount / 100));
-  const total          = Math.round(computed.materials + computed.labor - discountAmount);
+  // ── Discount + lining derived values ──────────────────────────
+  const discountAmount     = Math.round(computed.materials * (discount / 100));
+  const liningMetres       = isCurtain ? (computed.metres ?? 0) : 0;
+  const liningCost         = (isCurtain && lining.enabled) ? Math.round(liningMetres * lining.pricePerMetre) : 0;
+  const liningDiscountAmt  = (isCurtain && lining.enabled) ? Math.round(liningCost * (discount / 100)) : 0;
+  const total              = Math.round(computed.materials + computed.labor - discountAmount + liningCost - liningDiscountAmt);
 
   const modeLabel = isCurtain
     ? (mode === 'curtain' ? 'Curtain' : mode === 'roman' ? 'Roman blind' : 'Fabric only')
@@ -282,6 +290,13 @@ export default function Quote() {
 
   const buildShareCard = () => {
     const skuLine = fabricSku.trim() ? `SKU: ${fabricSku.trim()}` : null;
+    const liningLine = (isCurtain && lining.enabled && liningCost > 0)
+      ? `Lining · ${liningMetres} m × ${formatINR(lining.pricePerMetre)}/m: ${formatINR(liningCost)}`
+      : null;
+    const liningDiscountLine = (isCurtain && lining.enabled && discount > 0 && liningDiscountAmt > 0)
+      ? `Lining discount (${discount}%): − ${formatINR(liningDiscountAmt)}`
+      : null;
+
     const text = [
       `*Gruhome — Quick Quote*`,
       `Ref: ${qqn}`,
@@ -294,6 +309,8 @@ export default function Quote() {
       `*${modeLabel}*`,
       ...computed.lines.map(l => `${l.label}: ${l.value}`),
       discount > 0 ? `Discount (${discount}%): − ${formatINR(discountAmount)}` : null,
+      liningLine,
+      liningDiscountLine,
       ``,
       `*Total: ${formatINR(total)}*`,
       ``,
@@ -303,6 +320,10 @@ export default function Quote() {
     const lines = [
       ...computed.lines.map(l => ({ label: l.label, value: l.value })),
       ...(discount > 0 ? [{ label: `Discount (${discount}%)`, value: `− ${formatINR(discountAmount)}` }] : []),
+      ...(isCurtain && lining.enabled && liningCost > 0 ? [
+        { label: `Lining · ${liningMetres} m × ${formatINR(lining.pricePerMetre)}/m`, value: formatINR(liningCost) },
+        ...(discount > 0 ? [{ label: `Lining discount (${discount}%)`, value: `− ${formatINR(liningDiscountAmt)}` }] : []),
+      ] : []),
     ];
     if (skuLine) lines.unshift({ label: 'Fabric SKU', value: fabricSku.trim(), mono: true });
 
@@ -329,6 +350,13 @@ export default function Quote() {
       discount,
       computed,
       total,
+      lining: (isCurtain && lining.enabled && liningCost > 0) ? {
+        enabled: true,
+        pricePerMetre: lining.pricePerMetre,
+        metres: liningMetres,
+        cost: liningCost,
+        discountAmount: liningDiscountAmt,
+      } : null,
     });
     navigate('/cart');
   };
@@ -452,7 +480,7 @@ export default function Quote() {
             <Section title="Making cost" hindiKey="Making cost" hindiOn={hindiOn}>
               <NumberRow label="Making rate" hindiKey="Making rate" unit="₹/sq.ft" value={roman.makingRate} step={10} min={50} hindiOn={hindiOn} onChange={v => setRoman({ ...roman, makingRate: Math.max(50, v) })} />
               <RadioRow label="Quick set" hindiKey="Quick set" value={roman.makingRate} hindiOn={hindiOn}
-                options={[{ v: 100, l: '₹100' }, { v: 125, l: '₹125' }, { v: 150, l: '₹150' }]}
+                options={[{ v: 100, l: '₹100' }, { v: 150, l: '₹150' }, { v: 200, l: '₹200' }, { v: 250, l: '₹250' }]}
                 onChange={v => setRoman({ ...roman, makingRate: v })} />
             </Section>
           </>
@@ -487,6 +515,49 @@ export default function Quote() {
           </Section>
         )}
 
+        {/* ── Blackout / Lining add-on (curtain fabric only) ── */}
+        {isCurtain && (
+          <div className="flex flex-col gap-2">
+            <div className="text-[10.5px] uppercase tracking-widest font-bold text-white/40">
+              Blackout / Lining
+            </div>
+            <div className="bg-[#1C1C1E] border border-white/[0.08] rounded-xl px-3 py-1">
+              <div className={`flex items-center justify-between py-2.5 ${lining.enabled ? 'border-b border-white/[0.08]' : ''}`}>
+                <span className="text-[13.5px] font-medium text-white">Add blackout / lining</span>
+                <button
+                  onClick={() => setLining(l => ({ ...l, enabled: !l.enabled }))}
+                  className={`px-3.5 py-1 rounded-full text-[12px] font-semibold border transition-colors ${lining.enabled ? 'bg-[#8A9A5B] text-white border-[#8A9A5B]' : 'border-white/10 text-white/55'}`}
+                >
+                  {lining.enabled ? 'On' : 'Off'}
+                </button>
+              </div>
+              {lining.enabled && (
+                <div className="flex items-center justify-between py-2.5">
+                  <div>
+                    <span className="text-[13.5px] font-medium text-white">Price per metre</span>
+                    {liningMetres > 0 && (
+                      <div className="text-[11px] text-white/40 mt-0.5">
+                        {liningMetres} m · same discount as fabric
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[13px] text-white/40">₹</span>
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      value={lining.pricePerMetre}
+                      onChange={e => setLining(l => ({ ...l, pricePerMetre: Math.max(0, Number(e.target.value)) }))}
+                      className="w-[80px] px-2.5 py-1.5 rounded-lg border border-white/10 bg-[#252527] text-white text-[14px] font-semibold text-right tabular-nums outline-none"
+                    />
+                    <span className="text-[11px] text-white/40">/m</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Discount */}
         <div className="flex flex-col gap-2">
           <div className="text-[10.5px] uppercase tracking-widest font-bold text-white/40">
@@ -510,6 +581,21 @@ export default function Quote() {
               <span className="text-[12.5px] text-white/55">Discount on materials ({discount}%)</span>
               <span className="text-[13px] text-[#C5DE7A] font-semibold tabular-nums">− {formatINR(discountAmount)}</span>
             </div>
+          )}
+          {isCurtain && lining.enabled && liningCost > 0 && (
+            <>
+              <div className="h-px bg-white/[0.06] my-0.5" />
+              <div className="flex justify-between items-baseline gap-2">
+                <span className="text-[12.5px] text-white/55">Lining · {liningMetres} m × {formatINR(lining.pricePerMetre)}/m</span>
+                <span className="text-[13px] text-white font-medium tabular-nums">{formatINR(liningCost)}</span>
+              </div>
+              {discount > 0 && (
+                <div className="flex justify-between items-baseline">
+                  <span className="text-[12.5px] text-white/55">Lining discount ({discount}%)</span>
+                  <span className="text-[13px] text-[#C5DE7A] font-semibold tabular-nums">− {formatINR(liningDiscountAmt)}</span>
+                </div>
+              )}
+            </>
           )}
           <div className="h-px bg-white/[0.08] my-1" />
           <div className="flex justify-between items-baseline">

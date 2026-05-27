@@ -31,6 +31,9 @@ function CartItem({ item, onRemove }) {
         <div className="min-w-0">
           <div className="text-[10px] uppercase tracking-widest font-bold text-white/40">{item.mode}</div>
           <div className="text-[11.5px] text-white mt-0.5 truncate">{item.summary}</div>
+          {item.lining?.enabled && (
+            <div className="text-[10px] text-white/45 mt-0.5">+ lining {item.lining.metres} m</div>
+          )}
           {item.discount > 0 && (
             <div className="text-[10px] text-[#C5DE7A] font-semibold mt-0.5">{item.discount}% off materials</div>
           )}
@@ -52,13 +55,21 @@ export default function Cart() {
   const buildShareCard = () => {
     const headerLines = [`*Gruhome — Multi-item Quote*`, clientName ? `Client: ${clientName}` : null, ``].filter(Boolean);
     const blocks = cart.map((item, i) => {
-      const discount = Math.round(item.computed.materials * (item.discount / 100));
+      const fabricDiscount = Math.round(item.computed.materials * (item.discount / 100));
+      const liningLine = item.lining?.enabled
+        ? `   Lining · ${item.lining.metres} m × ${formatINR(item.lining.pricePerMetre)}/m: ${formatINR(item.lining.cost)}`
+        : null;
+      const liningDiscountLine = (item.lining?.enabled && item.discount > 0)
+        ? `   Lining discount ${item.discount}%: − ${formatINR(item.lining.discountAmount)}`
+        : null;
       const lines = [
         `${i + 1}. ${item.product['DESIGN NAME']} · ${item.product['BRAND NAME']}`,
         item.qqn ? `   Ref: ${item.qqn}` : null,
         `   ${item.mode} · ${item.summary}`,
         `   Materials ${formatINR(item.computed.materials)}${item.computed.labor ? ` · Labour ${formatINR(item.computed.labor)}` : ''}`,
-        item.discount > 0 ? `   Discount ${item.discount}%: − ${formatINR(discount)}` : null,
+        item.discount > 0 ? `   Discount ${item.discount}%: − ${formatINR(fabricDiscount)}` : null,
+        liningLine,
+        liningDiscountLine,
         `   ${formatINR(item.total)}`,
       ].filter(Boolean);
       return lines.join('\n');
@@ -68,10 +79,13 @@ export default function Cart() {
 
     const visualLines = [];
     cart.forEach((item, idx) => {
-      const discount = Math.round(item.computed.materials * (item.discount / 100));
+      const fabricDiscount = Math.round(item.computed.materials * (item.discount / 100));
       visualLines.push({ label: `${idx + 1}. ${item.product['DESIGN NAME']}`, value: formatINR(item.total), bold: true });
       visualLines.push({ label: `${item.mode} · ${item.summary}`, value: '', sub: true });
-      if (item.discount > 0) visualLines.push({ label: `Discount ${item.discount}%`, value: `− ${formatINR(discount)}`, sub: true, discount: true });
+      if (item.discount > 0) visualLines.push({ label: `Discount ${item.discount}%`, value: `− ${formatINR(fabricDiscount)}`, sub: true, discount: true });
+      if (item.lining?.enabled) {
+        visualLines.push({ label: `Lining ${item.lining.metres} m`, value: formatINR(item.lining.cost - item.lining.discountAmount), sub: true });
+      }
       if (idx < cart.length - 1) visualLines.push({ divider: true });
     });
 
