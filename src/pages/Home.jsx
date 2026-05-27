@@ -131,6 +131,10 @@ function PriceChip({ priceRange, onChange, priceBounds }) {
   );
 }
 
+// Explicit filter whitelist — only columns with meaningful, bounded cardinality.
+// Defined at module level so it is never recreated inside the render cycle.
+const FILTER_KEYS = ['BRAND NAME', 'BOOK NAME'];
+
 // ── Home page ─────────────────────────────────────────────────
 export default function Home() {
   const navigate = useNavigate();
@@ -152,33 +156,17 @@ export default function Home() {
   const [shareCard, setShareCard] = useState(null);
   const handleSelect = useCallback((p) => setSelectedProduct(p), []);
 
-  // Columns excluded from filtering — either numeric/price (handled by
-  // the price range chip) or high-cardinality identifiers (1000s of values).
-  const SKIP_FILTER_KEYS = new Set([
-    'RRP', 'MRP', 'GST', 'DESIGN NAME', 'DESIGN NAME ALT', 'PRICE CODE', 'Last Update',
-  ]);
-  // Safety ceiling: auto-exclude any column that has more than 200 unique values.
-  const MAX_FILTER_OPTIONS = 200;
-
   const filterSpecs = useMemo(() => {
     if (!products?.length) return [];
-    const allKeys = Object.keys(products[0] || {});
-    return allKeys
-      .filter(key => !SKIP_FILTER_KEYS.has(key))
-      .map(key => {
-        const seen = new Set();
-        let tooMany = false;
-        for (const p of products) {
-          const v = p[key];
-          if (v != null && v !== '' && v !== '0' && v !== 'N/A') {
-            seen.add(v.toString().trim());
-            if (seen.size > MAX_FILTER_OPTIONS) { tooMany = true; break; }
-          }
-        }
-        if (tooMany || seen.size < 2) return null;
-        return { key, label: key, options: Array.from(seen).sort() };
-      })
-      .filter(Boolean);
+    return FILTER_KEYS.map(key => {
+      const seen = new Set();
+      for (const p of products) {
+        const v = p[key];
+        if (v != null && v !== '' && v !== '0' && v !== 'N/A') seen.add(v.toString().trim());
+      }
+      const options = Array.from(seen).sort();
+      return options.length > 1 ? { key, label: key, options } : null;
+    }).filter(Boolean);
   }, [products]);
 
   const priceBounds = useMemo(() => {
@@ -353,8 +341,7 @@ export default function Home() {
         ) : layout === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts.slice(0, 150).map((product, i) => (
-              <ProductCard key={product['PRICE CODE'] || product['DESIGN NAME'] || i}
-                product={product} headers={headers} layout="grid" onSelect={handleSelect} />
+              <ProductCard key={i} product={product} headers={headers} layout="grid" onSelect={handleSelect} />
             ))}
             {filteredProducts.length > 150 && (
               <div className="col-span-full text-center py-6 text-[13px] text-[#2B2B2B]/40">
@@ -365,8 +352,7 @@ export default function Home() {
         ) : (
           <div className="flex flex-col gap-2.5">
             {filteredProducts.slice(0, 150).map((product, i) => (
-              <ProductCard key={product['PRICE CODE'] || product['DESIGN NAME'] || i}
-                product={product} headers={headers} layout="list" onSelect={handleSelect} />
+              <ProductCard key={i} product={product} headers={headers} layout="list" onSelect={handleSelect} />
             ))}
             {filteredProducts.length > 150 && (
               <div className="text-center py-6 text-[13px] text-[#2B2B2B]/40">
