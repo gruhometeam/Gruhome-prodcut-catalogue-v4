@@ -27,7 +27,7 @@ function CardGrid({ product, headers, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-[14px] p-6 border border-[#C8C2B8]/40 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col gap-4"
+      className="bg-white rounded-[14px] p-6 border border-[#C8C2B8]/40 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col gap-4 [touch-action:manipulation]"
     >
       {displayKeys.map((header, index) => {
         const value = product[header];
@@ -69,7 +69,7 @@ function CardList({ product, headers, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-xl px-4 py-3 border border-[#C8C2B8]/40 flex items-center gap-3 cursor-pointer hover:shadow-sm transition-all"
+      className="bg-white rounded-xl px-4 py-3 border border-[#C8C2B8]/40 flex items-center gap-3 cursor-pointer hover:shadow-sm transition-all [touch-action:manipulation]"
     >
       <div className="flex-1 min-w-0">
         <div className="font-serif text-[17px] font-semibold text-[#2B2B2B] truncate leading-tight">{designName}</div>

@@ -265,7 +265,7 @@ export default function Home() {
         <header className="mb-6 flex flex-col gap-4">
           {/* Title + Hindi toggle + count */}
           <div className="flex items-center justify-between">
-            <h1 className="font-serif text-[48px] text-[#2B2B2B] leading-none">Catalog</h1>
+            <h1 className="font-serif text-[48px] text-[#2B2B2B] leading-none">Gruhome</h1>
             <div className="flex items-center gap-3">
               <button
                 onClick={toggleHindi}
@@ -287,11 +287,9 @@ export default function Home() {
 
           {/* Sort + Price + Layout toggle row */}
           <div className="flex items-center gap-2">
-            <div className="flex gap-2 flex-1 min-w-0 overflow-x-auto no-scrollbar">
-              <SortChip sort={sort} onSort={setSort} />
-              <PriceChip priceRange={priceRange} onChange={setPriceRange} priceBounds={priceBounds} />
-            </div>
-            <div className="flex gap-1 flex-shrink-0">
+            <SortChip sort={sort} onSort={setSort} />
+            <PriceChip priceRange={priceRange} onChange={setPriceRange} priceBounds={priceBounds} />
+            <div className="flex gap-1 ml-auto flex-shrink-0">
               <button onClick={() => setLayout('grid')}
                 className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-colors ${layout === 'grid' ? 'bg-[#8A9A5B] border-[#8A9A5B] text-white' : 'border-[#C8C2B8] bg-white text-[#2B2B2B]/55'}`}>
                 <LayoutGrid size={15} />
@@ -394,7 +392,7 @@ export default function Home() {
             {/* Sticky action bar */}
             <div className="sticky bottom-0 bg-white border-t border-[#C8C2B8]/20 px-6 py-4 flex gap-3">
               <button
-                onClick={() => setShareCard(buildProductShareCard(selectedProduct))}
+                onClick={() => { const card = buildProductShareCard(selectedProduct); setSelectedProduct(null); setShareCard(card); }}
                 className="flex-1 h-11 rounded-xl bg-white border border-[#C8C2B8] text-[#2B2B2B] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-[#F4ECD8] transition-colors"
               >
                 Share
