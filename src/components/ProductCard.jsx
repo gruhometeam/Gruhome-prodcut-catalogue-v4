@@ -14,6 +14,11 @@ function formatValue(header, val) {
       style: 'currency', currency: 'INR', maximumFractionDigits: 0,
     }).format(num);
   }
+  // Trim floating-point noise on plain numeric values (e.g. GST amount
+  // 51.150000000000006 -> 51.15). Integers and strings are left untouched.
+  if (typeof val === 'number' && !Number.isInteger(val)) {
+    return Number(val.toFixed(2));
+  }
   return val;
 }
 
