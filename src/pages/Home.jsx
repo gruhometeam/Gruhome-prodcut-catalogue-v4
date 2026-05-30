@@ -407,7 +407,7 @@ export default function Home() {
                       {isPrice
                         ? new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 })
                             .format(parseFloat(value.toString().replace(/[^0-9.]/g, '')))
-                        : value}
+                        : (typeof value === 'number' && !Number.isInteger(value) ? Number(value.toFixed(2)) : value)}
                     </span>
                   </div>
                 );
