@@ -205,7 +205,7 @@ export default function Home() {
     // Sort
     if (sort === 'price-asc') list.sort((a, b) => parseFloat(a['MRP']) - parseFloat(b['MRP']));
     else if (sort === 'price-desc') list.sort((a, b) => parseFloat(b['MRP']) - parseFloat(a['MRP']));
-    else list.sort((a, b) => (a['DESIGN NAME'] || '').localeCompare(b['DESIGN NAME'] || ''));
+    else list.sort((a, b) => (a['DESIGN NAME'] ?? '').toString().localeCompare((b['DESIGN NAME'] ?? '').toString()));
 
     return list;
   }, [products, searchBlobs, search, filters, sort, priceRange]);
