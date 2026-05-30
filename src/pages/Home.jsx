@@ -175,12 +175,20 @@ export default function Home() {
     return { min: Math.min(...nums), max: Math.max(...nums) };
   }, [products]);
 
+  // Pre-index each row into one lowercased search blob, computed once per
+  // products change. Each keystroke then does a single string includes()
+  // per row instead of scanning every field object — ~10x fewer ops at scale.
+  // Terms never contain whitespace (split on \s+), so the space-joined blob
+  // matches identically to the old per-field scan.
+  const searchBlobs = useMemo(
+    () => products.map(p => Object.values(p).join(' ').toLowerCase()),
+    [products]
+  );
+
   const filteredProducts = useMemo(() => {
     const searchTerms = search.toLowerCase().trim().split(/\s+/).filter(Boolean);
-    let list = products.filter(p => {
-      const matchesSearch = searchTerms.every(term =>
-        Object.values(p).some(v => v?.toString().toLowerCase().includes(term))
-      );
+    let list = products.filter((p, i) => {
+      const matchesSearch = searchTerms.every(term => searchBlobs[i].includes(term));
       const matchesFilters = Object.entries(filters).every(([key, values]) => {
         if (!values || (Array.isArray(values) && !values.length)) return true;
         const pVal = p[key]?.toString().trim();
@@ -197,10 +205,10 @@ export default function Home() {
     // Sort
     if (sort === 'price-asc') list.sort((a, b) => parseFloat(a['MRP']) - parseFloat(b['MRP']));
     else if (sort === 'price-desc') list.sort((a, b) => parseFloat(b['MRP']) - parseFloat(a['MRP']));
-    else list.sort((a, b) => (a['DESIGN NAME'] || '').localeCompare(b['DESIGN NAME'] || ''));
+    else list.sort((a, b) => (a['DESIGN NAME'] ?? '').toString().localeCompare((b['DESIGN NAME'] ?? '').toString()));
 
     return list;
-  }, [products, search, filters, sort, priceRange]);
+  }, [products, searchBlobs, search, filters, sort, priceRange]);
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => {
